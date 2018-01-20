@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="pvbMvn4BVpZBxOb13ApVEecjLIYZxQNoDNPTP1sMAz0" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Unity3D,AssetBundle," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sheh伟伟的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="AssetBundle依赖关系如果一个或多个UnityEngine.Objects包含位于另一个bundle中的UnityEngine.Object的引用，则AssetBundles可以依赖于其他AssetBundles。如果UnityEngine.Object包含一个在其他任何AssetBundle中都不包含的UnityEngine.Object的引用，则不会发生依赖关系。在这种情况下，在构建A">
+<meta name="keywords" content="Unity3D,AssetBundle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「翻译」Unity中的AssetBundle详解（四）">
+<meta property="og:url" content="http://davidsheh.github.io/2017/09/17/「翻译」Unity中的AssetBundle详解（四）/index.html">
+<meta property="og:site_name" content="Sheh伟伟的博客">
+<meta property="og:description" content="AssetBundle依赖关系如果一个或多个UnityEngine.Objects包含位于另一个bundle中的UnityEngine.Object的引用，则AssetBundles可以依赖于其他AssetBundles。如果UnityEngine.Object包含一个在其他任何AssetBundle中都不包含的UnityEngine.Object的引用，则不会发生依赖关系。在这种情况下，在构建A">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://docs.unity3d.com/uploads/Main/AssetBundles-Native-1.png">
+<meta property="og:image" content="https://docs.unity3d.com/uploads/Main/AssetBundles-Native-2.png">
+<meta property="og:image" content="https://docs.unity3d.com/uploads/Main/AssetBundles-Native-3.png">
+<meta property="og:updated_time" content="2018-01-20T08:18:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「翻译」Unity中的AssetBundle详解（四）">
+<meta name="twitter:description" content="AssetBundle依赖关系如果一个或多个UnityEngine.Objects包含位于另一个bundle中的UnityEngine.Object的引用，则AssetBundles可以依赖于其他AssetBundles。如果UnityEngine.Object包含一个在其他任何AssetBundle中都不包含的UnityEngine.Object的引用，则不会发生依赖关系。在这种情况下，在构建A">
+<meta name="twitter:image" content="https://docs.unity3d.com/uploads/Main/AssetBundles-Native-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://davidsheh.github.io/2017/09/17/「翻译」Unity中的AssetBundle详解（四）/"/>
+
+
+
+
+
+  <title>「翻译」Unity中的AssetBundle详解（四） | Sheh伟伟的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104471088-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e2cb29ab0418c83c37bb4062cd58b1d4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sheh伟伟的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Attitude is a little thing that makes a big difference</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://davidsheh.github.io/2017/09/17/「翻译」Unity中的AssetBundle详解（四）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheh伟伟">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/4453301?v=4&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheh伟伟的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">「翻译」Unity中的AssetBundle详解（四）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-17T21:23:12+08:00">
+                2017-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术翻译/" itemprop="url" rel="index">
+                    <span itemprop="name">技术翻译</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/17/「翻译」Unity中的AssetBundle详解（四）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/17/「翻译」Unity中的AssetBundle详解（四）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="AssetBundle依赖关系"><a href="#AssetBundle依赖关系" class="headerlink" title="AssetBundle依赖关系"></a>AssetBundle依赖关系</h2><p>如果一个或多个UnityEngine.Objects包含位于另一个bundle中的UnityEngine.Object的引用，则AssetBundles可以依赖于其他AssetBundles。如果UnityEngine.Object包含一个在其他任何AssetBundle中都不包含的UnityEngine.Object的引用，则不会发生依赖关系。在这种情况下，在构建AssetBundles时，将bundle所依赖的对象的副本复制到捆绑包中。如果多个bundle中的多个对象包含对未分配给bundle的同一对象的引用，那么对该对象具有依赖关系的每个bundle将各自制作一个该对象的副本并将其打包到内置的AssetBundle中。<br>如果AssetBundle包含依赖关系，则在加载要尝试实例化的对象之前，加载包含这些依赖关系的bundles是重要的。 Unity不会尝试自动加载依赖关系。<br>考虑以下示例，<strong>Bundle 1</strong>中的材料引用了<strong>Bundle 2</strong>中的纹理：<br>在此示例中，加载<strong>Bundle 1</strong>中的Material之前，需要将<strong>Bundle 2</strong>加载到内存中。<strong>Bundle 1</strong>和<strong>Bundle 2</strong>的加载顺序无关紧要，重要的是在从<strong>Bundle 1</strong>加载Material之前加载<strong>Bundle 2</strong>。在下一节中，我们将讨论如何使用在<a href="http://davidsheh.github.io/2017/08/21/「翻译」Unity中的AssetBundle详解（三）/">上一篇博客</a>中所涉及的AssetBundleManifest对象，在运行时确定和加载依赖关系。</p>
+<h2 id="使用本地AssetBundles"><a href="#使用本地AssetBundles" class="headerlink" title="使用本地AssetBundles"></a>使用本地AssetBundles</h2><p>在 Unity 5 中，我们可以使用四种不同的 API 来加载 。它们的行为根据正在加载的平台和 AssetBundles 构建时使用的压缩方式（未压缩，LZMA，LZ4）而有所不同。<br>我们需要用到的四个 API 是：</p>
+<ul>
+<li><a href="https://docs.unity3d.com/ScriptReference/AssetBundle.LoadFromMemoryAsync.html?_ga=1.226802969.563709772.1479226228" target="_blank" rel="noopener">AssetBundle.LoadFromMemoryAsync</a></li>
+<li><a href="https://docs.unity3d.com/ScriptReference/AssetBundle.LoadFromFile.html?_ga=1.259297550.563709772.1479226228" target="_blank" rel="noopener">AssetBundle.LoadFromFile</a></li>
+<li><a href="https://docs.unity3d.com/ScriptReference/WWW.LoadFromCacheOrDownload.html?_ga=1.226802969.563709772.1479226228" target="_blank" rel="noopener">WWW.LoadfromCacheOrDownload</a></li>
+<li><a href="https://docs.unity3d.com/ScriptReference/Networking.UnityWebRequest.html?_ga=1.259297550.563709772.1479226228" target="_blank" rel="noopener">UnityWebRequest</a>’s <a href="https://docs.unity3d.com/ScriptReference/Networking.DownloadHandlerAssetBundle.html?_ga=1.264500235.563709772.1479226228" target="_blank" rel="noopener">DownloadHandlerAssetBundle </a>(Unity 5.3 或者更高的版本)</li>
+</ul>
+<h3 id="AssetBundle-LoadFromMemoryAsync"><a href="#AssetBundle-LoadFromMemoryAsync" class="headerlink" title="AssetBundle.LoadFromMemoryAsync"></a>AssetBundle.LoadFromMemoryAsync</h3><p><a href="https://docs.unity3d.com/ScriptReference/AssetBundle.LoadFromMemoryAsync.html" target="_blank" rel="noopener">AssetBundle.LoadFromMemoryAsync</a><br>此函数使用包含 AssetBundle 数据的字节数组的参数。如果需要也可以传递一个 CRC 值。如果 Bundle 是LZMA 压缩的，它将在加载时解压缩 AssetBundle。 LZ4 压缩的 Bundle 在压缩状态时被加载。<br>以下是使用此方法的一个示例：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">IEnumerator <span class="title">LoadFromMemoryAsync</span>(<span class="params"><span class="keyword">string</span> path</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    AssetBundleCreateRequest createRequest = AssetBundle.LoadFromMemoryAsync(File.ReadAllBytes(path));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> createRequest;</span><br><span class="line"></span><br><span class="line">    AssetBundle bundle = createRequest.assetBundle;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> prefab = bundle.LoadAsset.&lt;GameObject&gt;(<span class="string">"MyObject"</span>);</span><br><span class="line">    Instantiate(prefab);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>但是，这不是唯一可以使用 LoadFromMemoryAsync 的策略。 可以用任何获取所需的字节数组的过程替代<code>File.ReadAllBytes(path)</code> 方法。</p>
+<h3 id="AssetBundle-LoadFromFile"><a href="#AssetBundle-LoadFromFile" class="headerlink" title="AssetBundle.LoadFromFile"></a>AssetBundle.LoadFromFile</h3><p><a href="https://docs.unity3d.com/ScriptReference/AssetBundle.LoadFromFile.html" target="_blank" rel="noopener">AssetBundle.LoadFromFile</a><br>从本地存储加载未压缩的 Bundles 时，此API非常高效。如果 Bundle 是未压缩或块（LZ4）压缩的，LoadFromFile 将直接从磁盘加载 Bundle。使用此方法加载完全压缩（LZMA）的 Bundle 将首先解压缩包，然后再将其加载到内存中。<br>如何使用 <code>LoadFromFile</code> 的一个例子：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">LoadFromFileExample</span> <span class="title">extends</span> <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">    <span class="function">function <span class="title">Start</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> myLoadedAssetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, <span class="string">"myassetBundle"</span>));</span><br><span class="line">        <span class="keyword">if</span> (myLoadedAssetBundle == <span class="literal">null</span>) &#123;</span><br><span class="line">            Debug.Log(<span class="string">"Failed to load AssetBundle!"</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> prefab = myLoadedAssetBundle.LoadAsset.&lt;GameObject&gt;(<span class="string">"MyObject"</span>);</span><br><span class="line">        Instantiate(prefab);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意：在使用 Unity 5.3 或更早版本的Android设备上，尝试从 Streaming Assets 路径加载 AssetBundles 时，此API将失效。这是因为该路径的内容将驻留在压缩的 <code>.jar</code> 文件中。 Unity 5.4和更新版本可以使用这个API 加载 Streaming Assets 路径下的资源。</p>
+<h3 id="WWW-LoadFromCacheOrDownload"><a href="#WWW-LoadFromCacheOrDownload" class="headerlink" title="WWW.LoadFromCacheOrDownload"></a>WWW.LoadFromCacheOrDownload</h3><p><a href="https://docs.unity3d.com/ScriptReference/WWW.LoadFromCacheOrDownload.html" target="_blank" rel="noopener">WWW.LoadFromCacheOrDownload</a></p>
+<p><strong>此 API 将被废弃 （请使用 UnityWebRequest） </strong></p>
+<p>此API可用于从远程服务器下载 AssetBundles 或加载本地 AssetBundles。它是 UnityWebRequest API 的较旧且不太理想的版本。<br>从远程位置加载 AssetBundle 将自动缓存 AssetBundle。如果AssetBundle被压缩，那么一个工作线程将自动解压缩该包并将其写入缓存。一旦捆绑包解压缩并缓存，它将像 AssetBundle.LoadFromFile 一样加载。<br>如何使用 <code>LoadFromCacheOrDownload</code> 的一个例子：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">LoadFromCacheOrDownloadExample</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function">IEnumerator <span class="title">Start</span> (<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">            <span class="keyword">while</span> (!Caching.ready)</span><br><span class="line">                    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> www = WWW.LoadFromCacheOrDownload(<span class="string">"http://myserver.com/myassetBundle"</span>, <span class="number">5</span>);</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> www;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">string</span>.IsNullOrEmpty(www.error))</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(www.error);</span><br><span class="line">            <span class="keyword">yield</span> <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> myLoadedAssetBundle = www.assetBundle;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> asset = myLoadedAssetBundle.mainAsset;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>由于缓存 AssetBundle 在 WWW 对象中的字节的内存开销，建议使用 WWW.LoadFromCacheOrDownload<br> 的所有开发人员确保其 AssetBundles 保持较小——最多为几兆字节。还建议在限制内存平台（如移动设备）上运行的开发人员确保其代码一次只下载一个 AssetBundle，以避免内存尖峰。<br>如果缓存文件夹没有用于缓存附加文件的空间，LoadFromCacheOrDownload将从缓存中迭代删除最近最少使用的AssetBundle，直到有足够的空间可用于存储新的AssetBundle。如果无法进行空间（因为硬盘已满，或者当前正在使用缓存中的所有文件）释放，LoadFromCacheOrDownload() 将绕过缓存并将文件以流的形式加入内存。<br>为了强制 LoadFromCacheOrDownload，版本参数（第二个参数）将需要更改。如果传递给该函数的版本与当前缓存的AssetBundle的版本匹配，则AssetBundle将仅从缓存加载。</p>
+<h3 id="UnityWebRequest"><a href="#UnityWebRequest" class="headerlink" title="UnityWebRequest"></a>UnityWebRequest</h3><p><a href="https://docs.unity3d.com/ScriptReference/Networking.UnityWebRequest.GetAssetBundle.html" target="_blank" rel="noopener">UnityWebRequest</a></p>
+<p>UnityWebRequest 有一个特定的 API 调用来处理 AssetBundles。首先，你需要使用<br> UnityWebRequest.GetAssetBundle 创建您的 Web 请求。返回请求后，将请求对象传递给<code>DownloadHandlerAssetBundle.GetContent(UnityWebRequest)</code>。此 <code>GetContent</code> 函数调用将返回AssetBundle 对象。<br>你还可以在下载 Bundle 后使用 <a href="https://docs.unity3d.com/ScriptReference/Networking.DownloadHandlerAssetBundle.html" target="_blank" rel="noopener">DownloadHandlerAssetBundle</a> 类中的 <code>assetBundle</code> 属性，以<code>AssetBundle.LoadFromFile</code> 的效率加载 AssetBundle。<br>以下是一个如何加载包含两个 GameObject 的 AssetBundle 并实例化它们的示例。要开始这个过程，我们只需要调用 <code>StartCoroutine(InstantiateObject())</code>;<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">IEnumerator <span class="title">InstantiateObject</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">string</span> uri = <span class="string">"file:///"</span> + Application.dataPath + <span class="string">"/AssetBundles/"</span> + assetBundleName;        UnityEngine.Networking.UnityWebRequest request = UnityEngine.Networking.UnityWebRequest.GetAssetBundle(uri, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> request.Send();</span><br><span class="line">    AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(request);</span><br><span class="line">    GameObject cube = bundle.LoadAsset&lt;GameObject&gt;(<span class="string">"Cube"</span>);</span><br><span class="line">    GameObject sprite = bundle.LoadAsset&lt;GameObject&gt;(<span class="string">"Sprite"</span>);</span><br><span class="line">    Instantiate(cube);</span><br><span class="line">    Instantiate(sprite);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用 UnityWebRequest 的优点是它允许开发人员以更灵活的方式处理下载的数据，并可能消除不必要的内存使用情况。这是 UnityEngine.WWW 类中首选的 API。</p>
+<h4 id="从-AssetBundles-载入资产"><a href="#从-AssetBundles-载入资产" class="headerlink" title="从 AssetBundles 载入资产"></a>从 AssetBundles 载入资产</h4><p>现在，您已经成功下载了 AssetBundle，是时候最终加载某些资产了。<br>通用代码段：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T objectFromBundle = bundleObject.LoadAsset&lt;T&gt;(assetName);</span><br></pre></td></tr></table></figure></p>
+<p><code>T</code> 是尝试加载的资产的类型。<br>决定如何加载资产时，有几种选择。分别是 LoadAsset 、LoadAllAssets 和它们的对应的异步方法 LoadAssetAsync 和 LoadAllAssetsAsync。<br>下面代码展示了如何从AssetBundles同步加载资产：<br>加载单个 GameObject：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GameObject gameObject = loadedAssetBundle.LoadAsset&lt;GameObject&gt;(assetName);</span><br></pre></td></tr></table></figure></p>
+<p>加载所有资产：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Unity.Object[] objectArray = loadedAssetBundle.LoadAllAssets();</span><br></pre></td></tr></table></figure></p>
+<p>现在，正如上文所示的方法返回的对象类型或要加载的对象的数组，异步方法返回一个 <a href="https://docs.unity3d.com/ScriptReference/AssetBundleRequest.html" target="_blank" rel="noopener">AssetBundleRequest</a>。访问资产之前，需要等待此操作完成。加载一个 Asset：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AssetBundleRequest request = loadedAssetBundleObject.LoadAssetAsync&lt;GameObject&gt;(assetName);</span><br><span class="line"><span class="keyword">yield</span> <span class="keyword">return</span> request;</span><br><span class="line"><span class="keyword">var</span> loadedAsset = request.asset;</span><br></pre></td></tr></table></figure></p>
+<p>以及<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AssetBundleRequest request = loadedAssetBundle.LoadAllAssetsAsync();</span><br><span class="line"><span class="keyword">yield</span> <span class="keyword">return</span> request;</span><br><span class="line"><span class="keyword">var</span> loadedAssets = request.allAssets;</span><br></pre></td></tr></table></figure></p>
+<p>一旦你加载了你所需要的 Assets，接下来就可以像使用 Unity 中任何其他对象一样使用加载的对象。</p>
+<h4 id="加载-AssetBundle-清单文件（Manifests）"><a href="#加载-AssetBundle-清单文件（Manifests）" class="headerlink" title="加载 AssetBundle 清单文件（Manifests）"></a>加载 AssetBundle 清单文件（Manifests）</h4><p>加载 AssetBundle 清单文件非常有用。特别是在处理 AssetBundle 依赖项时。<br>要获得一个可用的 <a href="https://docs.unity3d.com/ScriptReference/AssetBundleManifest.html" target="_blank" rel="noopener">AssetBundleManifest</a> 对象，你需要加载额外的 AssetBundle（名称与其所在文件夹相同），并从中加载类型为 AssetBundleManifest 的对象。<br>加载清单本身与加载 AssetBundle 中的任何其他资产完全相同：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AssetBundle assetBundle = AssetBundle.LoadFromFile(manifestFilePath);</span><br><span class="line">AssetBundleManifest manifest = assetBundle.LoadAsset&lt;AssetBundleManifest&gt;(<span class="string">"AssetBundleManifest"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>现在，你可以通过上述示例中的 manifest 对象访问 <code>AssetBundleManifest</code> API 的调用。从这里你可以使用清单来获取有关你所构建的 AssetBundles 的信息。该信息包括 AssetBundles 的依赖关系数据、散列数据和变体数据。</p>
+<p>在前面的部分，当我们讨论 AssetBundle Dependencies 并且如果一个 bundle 对另一个 bundle 有依赖关系，那么在从原始 bundle 加载任何资源之前，需要加载这些 bundle。清单对象使得动态地找到加载依赖性成为可能。假设我们要加载名为 “assetBundle” 的 AssetBundle 的所有依赖项。<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">AssetBundle assetBundle = AssetBundle.LoadFromFile(manifestFilePath);</span><br><span class="line">AssetBundleManifest manifest = assetBundle.LoadAsset&lt;AssetBundleManifest&gt;(<span class="string">"AssetBundleManifest"</span>);</span><br><span class="line"><span class="keyword">string</span>[] dependencies = manifest.GetAllDependencies(<span class="string">"assetBundle"</span>); <span class="comment">//Pass the name of the bundle you want the dependencies for.</span></span><br><span class="line"><span class="keyword">foreach</span>(<span class="keyword">string</span> dependency <span class="keyword">in</span> dependencies)</span><br><span class="line">&#123;</span><br><span class="line">    AssetBundle.LoadFromFile(Path.Combine(assetBundlePath, dependency));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面代码表示正在加载 AssetBundles、AssetBundle依赖关系和资产，现在是时候讨论管理所有这些加载的 AssetBundles 了。</p>
+<h4 id="管理加载的-AssetBundles"><a href="#管理加载的-AssetBundles" class="headerlink" title="管理加载的 AssetBundles"></a>管理加载的 AssetBundles</h4><p>另请参阅：Unity 官方教程中有关 <a href="https://unity3d.com/fr/learn/tutorials/topics/best-practices/assetbundle-usage-patterns#Managing_Loaded_Assets" target="_blank" rel="noopener">Managing Loaded AssetBundles</a>的教程。</p>
+<p>当它们从活动场景中删除时，Unity不会自动卸载对象。资产清理在特定时间触发，也可以手动触发。知道何时加载和卸载 AssetBundle 很重要。不正确卸载 AssetBundle 可能会导致内存中的对象复制或其他不合要求的情况（如缺少纹理）。<br>了解 AssetBundle 管理最重要的是什么时候调用 <code>AssetBundle.Unload(bool)</code>，并且在函数调用时你应该将 true 或 false 作为参数传递给函数。卸载 AssetBundle 是一个非静态的功能，此 API 卸载正在调用的 AssetBundle 的头部信息。该函数的参数表示是否也卸载从此 AssetBundle 实例化的所有对象。</p>
+<p>如果使用 <code>AssetBundle.Unload(true)</code> 方法，就会卸载从 AssetBundle 中加载的所有对象，即使它们正在当前活动的场景中使用。这正是我们前面提到的，这可能会导致纹理丢失。我们假设材质 M 是从 AssetBundle AB 加载的，如下所示。如果调用 AB.Unload（true）。活动场景中的任何 M 实例也将被卸载和销毁。如果你改为调用 AB.Unload（false），它会破坏当前 M 和 AB 实例的链接。<br><img src="https://docs.unity3d.com/uploads/Main/AssetBundles-Native-1.png" alt=""><br>如果以后再次加载 AB，并调用 AB.LoadAsset()，Unity 将不会将 M 的现有副本重新链接到新加载的材质。那么 M 会加载两个副本。<br><img src="https://docs.unity3d.com/uploads/Main/AssetBundles-Native-2.png" alt=""><br><img src="https://docs.unity3d.com/uploads/Main/AssetBundles-Native-3.png" alt=""></p>
+<p>一般来说，使用 AssetBundle.Unload(false) 并不会导致理想的情况。大多数项目应该使用 AssetBundle.Unload(true) 来避免在内存中复制对象。<br>大多数项目应该使用 AssetBundle.Unload(true) 并采用一种方法来确保对象不被重复。两种常见的方法是：</p>
+<ul>
+<li>在应用程序的生命周期中具有明确定义的地方，卸载临时 AssetBundles，例如关卡之间或加载屏幕期间。</li>
+<li>维护单个对象的引用计数，并仅在其所有组成对象未使用时卸载 AssetBundles。这允许应用程序卸载和重新加载单个对象而没有重复的内存。</li>
+</ul>
+<p>如果应用程序必须使用 AssetBundle.Unload(false)，那么单个对象只能以两种方式卸载：</p>
+<ul>
+<li>在场景和代码中消除对不需要的对象的所有引用。完成之后，调用 <a href="https://docs.unity3d.com/ScriptReference/Resources.UnloadUnusedAssets.html" target="_blank" rel="noopener">Resources.UnloadUnusedAssets</a>。</li>
+<li>使用非叠加式加载场景。这将销毁当前场景中的所有对象并自动调用 <a href="https://docs.unity3d.com/ScriptReference/Resources.UnloadUnusedAssets.html" target="_blank" rel="noopener">Resources.UnloadUnusedAssets</a>。</li>
+</ul>
+<p>如果你不想自己管理加载 AssetBundles、依赖关系和 Assets 本身，你可能会发现自己需要 AssetBundle Manager。</p>
+<blockquote>
+<p>原文链接：</p>
+<ol>
+<li><a href="https://docs.unity3d.com/Manual/AssetBundles-Dependencies.html" target="_blank" rel="noopener">AssetBundle Dependencies</a></li>
+<li><a href="https://docs.unity3d.com/Manual/AssetBundles-Native.html" target="_blank" rel="noopener">Using AssetBundles Natively</a></li>
+</ol>
+</blockquote>
+<hr>
+<p><strong>同系列文章</strong></p>
+<p><a href="http://davidsheh.github.io/2017/07/14/「翻译」Unity中的AssetBundle详解（一）/">「翻译」Unity中的AssetBundle详解（一）</a></p>
+<p><a href="http://davidsheh.github.io/2017/08/13/「翻译」Unity中的AssetBundle详解（二）/">「翻译」Unity中的AssetBundle详解（二）</a></p>
+<p><a href="http://davidsheh.github.io/2017/08/21/「翻译」Unity中的AssetBundle详解（三）/">「翻译」Unity中的AssetBundle详解（三）</a></p>
+<p><a href="http://davidsheh.github.io/2017/09/17/「翻译」Unity中的AssetBundle详解（四）/">「翻译」Unity中的AssetBundle详解（四）</a> </p>
+<p><a href="http://davidsheh.github.io/2017/09/23/「翻译」Unity中的AssetBundle详解（五）/">「翻译」Unity中的AssetBundle详解（五）</a> </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Sheh伟伟 WeChat Pay"/>
+        <p>微信打赏</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Sheh伟伟 Alipay"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Sheh伟伟
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://davidsheh.github.io/2017/09/17/「翻译」Unity中的AssetBundle详解（四）/" title="「翻译」Unity中的AssetBundle详解（四）">http://davidsheh.github.io/2017/09/17/「翻译」Unity中的AssetBundle详解（四）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unity3D/" rel="tag"># Unity3D</a>
+          
+            <a href="/tags/AssetBundle/" rel="tag"># AssetBundle</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/16/mac-c-env/" rel="next" title="在 Mac 上配置 C++ 环境">
+                <i class="fa fa-chevron-left"></i> 在 Mac 上配置 C++ 环境
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/23/「翻译」Unity中的AssetBundle详解（五）/" rel="prev" title="「翻译」Unity中的AssetBundle详解（五）">
+                「翻译」Unity中的AssetBundle详解（五） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "1",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      },
+      "slide": {
+        "bdImg": "5",
+        "bdPos": "left",
+        "bdTop": "100"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          <!-- ad start -->
+          
+
+          <!-- ad end -->
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/4453301?v=4&s=460"
+               alt="Sheh伟伟" />
+          <p class="site-author-name" itemprop="name">Sheh伟伟</p>
+           
+              <p class="site-description motion-element" itemprop="description">做个有态度的程序员</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/DavidSheh" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1586558567/profile?topnav=1&wvr=6&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="764150976@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AssetBundle依赖关系"><span class="nav-number">1.</span> <span class="nav-text">AssetBundle依赖关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用本地AssetBundles"><span class="nav-number">2.</span> <span class="nav-text">使用本地AssetBundles</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AssetBundle-LoadFromMemoryAsync"><span class="nav-number">2.1.</span> <span class="nav-text">AssetBundle.LoadFromMemoryAsync</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AssetBundle-LoadFromFile"><span class="nav-number">2.2.</span> <span class="nav-text">AssetBundle.LoadFromFile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WWW-LoadFromCacheOrDownload"><span class="nav-number">2.3.</span> <span class="nav-text">WWW.LoadFromCacheOrDownload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UnityWebRequest"><span class="nav-number">2.4.</span> <span class="nav-text">UnityWebRequest</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#从-AssetBundles-载入资产"><span class="nav-number">2.4.1.</span> <span class="nav-text">从 AssetBundles 载入资产</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加载-AssetBundle-清单文件（Manifests）"><span class="nav-number">2.4.2.</span> <span class="nav-text">加载 AssetBundle 清单文件（Manifests）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管理加载的-AssetBundles"><span class="nav-number">2.4.3.</span> <span class="nav-text">管理加载的 AssetBundles</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheh伟伟</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://davidsheh.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://davidsheh.github.io/2017/09/17/「翻译」Unity中的AssetBundle详解（四）/';
+          this.page.identifier = '2017/09/17/「翻译」Unity中的AssetBundle详解（四）/';
+          this.page.title = '「翻译」Unity中的AssetBundle详解（四）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://davidsheh.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="pvbMvn4BVpZBxOb13ApVEecjLIYZxQNoDNPTP1sMAz0" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="C#," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sheh伟伟的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="1. C#类型的取值范围 2. 访问限制符   修饰符 应用于 说明     public 所有类型或成员 任何代码均可以访问该项   protected 类型和内嵌类型的所有成员 只有派生的类型能够访问该项   internal 所有类型或成员 只能在包含它的程序集中访问该项   private 类型和内嵌类型的所有成员 只能在它所属的类型中访问该项   protected internal 类">
+<meta name="keywords" content="C#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「C#高级编程」读书笔记">
+<meta property="og:url" content="http://davidsheh.github.io/2016/03/03/「C_Sharp高级编程」读书笔记/index.html">
+<meta property="og:site_name" content="Sheh伟伟的博客">
+<meta property="og:description" content="1. C#类型的取值范围 2. 访问限制符   修饰符 应用于 说明     public 所有类型或成员 任何代码均可以访问该项   protected 类型和内嵌类型的所有成员 只有派生的类型能够访问该项   internal 所有类型或成员 只能在包含它的程序集中访问该项   private 类型和内嵌类型的所有成员 只能在它所属的类型中访问该项   protected internal 类">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/cs_value_range.jpg">
+<meta property="og:updated_time" content="2018-01-20T08:18:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「C#高级编程」读书笔记">
+<meta name="twitter:description" content="1. C#类型的取值范围 2. 访问限制符   修饰符 应用于 说明     public 所有类型或成员 任何代码均可以访问该项   protected 类型和内嵌类型的所有成员 只有派生的类型能够访问该项   internal 所有类型或成员 只能在包含它的程序集中访问该项   private 类型和内嵌类型的所有成员 只能在它所属的类型中访问该项   protected internal 类">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/cs_value_range.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://davidsheh.github.io/2016/03/03/「C_Sharp高级编程」读书笔记/"/>
+
+
+
+
+
+  <title>「C#高级编程」读书笔记 | Sheh伟伟的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104471088-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e2cb29ab0418c83c37bb4062cd58b1d4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sheh伟伟的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Attitude is a little thing that makes a big difference</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://davidsheh.github.io/2016/03/03/「C_Sharp高级编程」读书笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheh伟伟">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/4453301?v=4&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheh伟伟的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">「C#高级编程」读书笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-03T18:50:55+08:00">
+                2016-03-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/读书笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">读书笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/03/03/「C_Sharp高级编程」读书笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/03/03/「C_Sharp高级编程」读书笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-C-类型的取值范围"><a href="#1-C-类型的取值范围" class="headerlink" title="1. C#类型的取值范围"></a>1. C#类型的取值范围</h3><p><img src="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/cs_value_range.jpg" alt="取值范围"></p>
+<h3 id="2-访问限制符"><a href="#2-访问限制符" class="headerlink" title="2. 访问限制符"></a>2. 访问限制符</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">修饰符</th>
+<th style="text-align:left">应用于</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">public</td>
+<td style="text-align:left">所有类型或成员</td>
+<td style="text-align:left">任何代码均可以访问该项</td>
+</tr>
+<tr>
+<td style="text-align:center">protected</td>
+<td style="text-align:left">类型和内嵌类型的所有成员</td>
+<td style="text-align:left">只有派生的类型能够访问该项</td>
+</tr>
+<tr>
+<td style="text-align:center">internal</td>
+<td style="text-align:left">所有类型或成员</td>
+<td style="text-align:left">只能在包含它的程序集中访问该项</td>
+</tr>
+<tr>
+<td style="text-align:center">private</td>
+<td style="text-align:left">类型和内嵌类型的所有成员</td>
+<td style="text-align:left">只能在它所属的类型中访问该项</td>
+</tr>
+<tr>
+<td style="text-align:center">protected internal</td>
+<td style="text-align:left">类型和内嵌类型的所有成员</td>
+<td style="text-align:left">只能在包含它的程序集和派生类型的任何代码中访问该项</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-C-常见的修饰符"><a href="#3-C-常见的修饰符" class="headerlink" title="3. C#常见的修饰符"></a>3. C#常见的修饰符</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">修饰符</th>
+<th style="text-align:left">应用于</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">new</td>
+<td style="text-align:left">函数成员</td>
+<td style="text-align:left">成员用相同的签名隐藏继承的成员</td>
+</tr>
+<tr>
+<td style="text-align:center">static</td>
+<td style="text-align:left">所有成员</td>
+<td style="text-align:left">成员不作用于类的具体实例</td>
+</tr>
+<tr>
+<td style="text-align:center">virtual</td>
+<td style="text-align:left">仅函数成员</td>
+<td style="text-align:left">成员可以由派生类重写</td>
+</tr>
+<tr>
+<td style="text-align:center">abstract</td>
+<td style="text-align:left">仅函数成员</td>
+<td style="text-align:left">虚拟成员定义了成员的签名，但没有提供实现代码</td>
+</tr>
+<tr>
+<td style="text-align:center">override</td>
+<td style="text-align:left">仅函数成员</td>
+<td style="text-align:left">成员重写了继承的虚拟或抽象成员</td>
+</tr>
+<tr>
+<td style="text-align:center">sealed</td>
+<td style="text-align:left">类、方法和属性</td>
+<td style="text-align:left">对于类，不能继承自密封类。对于属性和方法，成员重写已继承的虚拟成员，但任何派生类中的任何成员都不能重写该成员。该修饰符必须与override一起使用</td>
+</tr>
+<tr>
+<td style="text-align:center">extern</td>
+<td style="text-align:left">仅静态[DllImport]方法</td>
+<td style="text-align:left">成员在外部用另一种语言实现</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-结构体"><a href="#4-结构体" class="headerlink" title="4. 结构体"></a>4. 结构体</h3><ul>
+<li>结构是值类型，不是引用类型。</li>
+<li>存储在栈中或存储为内联（inline）（如果它们是存储在堆中的另一个对象的一部分），其生存期的限制与简单的数据类型一样。</li>
+<li>结构体不支持继承。</li>
+<li>对于结构构造函数的工作方式有一些区别。尤其是编译器总是提供一个无参数的默认构造函数，它是不允许替换的。</li>
+<li>使用结构，可以指定字段如何在内存中的布局。</li>
+<li>注意，因为结构是值类型，所以<code>new</code>运算符与类和其他引用类型的工作方式不同。<code>new</code>运算符并不分配堆中的内存，而是只调用相应的构造函数，根据传送给它的参数初始化所有的字段。</li>
+<li>结构遵循其他数据类型都遵循的规则：在使用前所有的元素都必须进行初始化。在结构上调用<code>new</code>运算符，或者给所有的字段分别赋值,结构就完全初始化了。当然,如果结构定义为类的成员字段,在初始化包含的对象时,该结构会自动初始化为0。</li>
+<li>结构是会影响性能的值类型,但根据使用结构的方式,这种影响可能是正面的,也可能是负面的。正面的影响是为结构分配内存时,速度非常快,因为它们将内联或者保存在栈中。在结构超出了作用域被删除时,速度也很快。负面影响是,只要把结构作为参数来传递或者把一个结构赋予另一个结构（如A=B,其 中A和B是结构),结构的所有内容就被复制,而对于类,则只复制引用。这样就会有性能损失,根据结构的大小,性能损失也不同。注意,结构主要用于小的数据结构。但当把结构作为参数传递给方法时,应把它作为ref参数传递,以避免性能损失————此时只传递了结构在内存中的地址,这样传递速度就与在类中的传递速度一样快了。但如果这样做,就必须注意被调用的方法可以改变结构的值。</li>
+<li>结构不是为继承设计的。这意味着:它不能从一个结构中继承。唯一的例外是对应的结构(和C#中的其他类型一样)最终派生于类<code>System.Object</code>。因此,结构也可以访问<code>System.Object</code>的方法。在结构中,甚至可以重写<code>System.Object</code>中的方法————如重写<code>ToString()</code>方法。结构的继承链是:每个结构派生自<code>System.ValueType</code>类,<code>System.ValueType</code>类又派生自<code>System.Object</code>。<code>ValueType</code>并没有给<code>Object</code>添加任何新成员,但提供了一些更适合结构的实现方式。注意,不能为结构提供其他基类,每个结构都派生自<code>ValueType</code>。</li>
+<li>为结构定义构造函数的方式与为类定义构造函数的方式相同,但 不允许定义无参数的构造函数。默认构造函数把数值字段都初始化为0,把引用类型字段初始化为<code>null</code>,且总是隐式地给出,即使提供了其他带参数的构造函数,也是如此。提供字段的初始值也不能绕过默认构造函数。</li>
+</ul>
+<h3 id="5-扩展方法"><a href="#5-扩展方法" class="headerlink" title="5. 扩展方法"></a>5. 扩展方法</h3><ul>
+<li>扩展方法允许改变一个类，但不需要该类的源代码。所以使用扩展方法的情景之一是，当不知道类的源码或者不想修改该类的源码却想扩展该类，就可以用扩展方法。</li>
+<li>扩展方法是静态方法，它是类的一部分，但实际上没有放在类的源代码中。</li>
+<li>扩展方法需放在静态类中。</li>
+<li>对于扩展方法，第一个参数是要扩展的类型，它放在<code>this</code>关键字的后面。</li>
+<li>在扩展方法中，可以访问所扩展类型的所有共有方法和属性。</li>
+<li>如果扩展方法与类中的某个方法同名，就从来不会调用扩展方法。类中已有的任何实例方法优先。</li>
+</ul>
+<h3 id="6-var关键字。"><a href="#6-var关键字。" class="headerlink" title="6. var关键字。"></a>6. <code>var</code>关键字。</h3><p>编译器可以根据变量的初始化值“推断 ” 变量的类型。使用var关键字需要遵循的一些规则：</p>
+<ul>
+<li>变量必须初始化。否则，编译器就没有推断变量类型的依据。</li>
+<li>初始化器不能为空。</li>
+<li>初始化器必须放在表达式中。</li>
+<li>不能把初始化器设置为一个对象，除非在初始化器中创建了一个新对象。</li>
+</ul>
+<h3 id="7-密封类和密封方法"><a href="#7-密封类和密封方法" class="headerlink" title="7. 密封类和密封方法"></a>7. 密封类和密封方法</h3><ul>
+<li>C#允许把类和方法声明为<code>sealed</code>。对于类，这表示不能继承该类；对于方法，这表示不能重写该方法。</li>
+<li>在把类或方法标记为<code>sealed</code>时,最可能的情形是:如果要对库、类或自己编写的其他类作用域之外的类或方法进行操作,则重写某些功能会导致代码混乱。也可以因商业原因把类或方法标记为<code>sealed</code>,以防第三方以违反授权协议的方式扩展该类。但一般情况下,在把类或成员标记为<code>sealed</code>时要小心,因为这么做会严重限制它的使用方式。即使认为它不能对继承自一个类或重写类的某个成员发挥作用,仍有可能在将来的某个时刻,有人会遇到我们没有预料到的情形,此时这么做就很有用。.Net基类库大量使用了密封类 ,使希望从这些类中派生出自己的类的第三方开发人员无法访问这些类。例如,<code>string</code>就是一个密封类。</li>
+</ul>
+<h3 id="8-约束"><a href="#8-约束" class="headerlink" title="8. 约束"></a>8. 约束</h3><p>泛型支持的几种约束类型:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">约束</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">where T : struct</td>
+<td style="text-align:left">对于结构约束，类型T必须是值类型</td>
+</tr>
+<tr>
+<td style="text-align:center">where T : class</td>
+<td style="text-align:left">类约束指定类型T必须是引用类型</td>
+</tr>
+<tr>
+<td style="text-align:center">where T : IFoo</td>
+<td style="text-align:left">指定类型T必须实现接口IFoo</td>
+</tr>
+<tr>
+<td style="text-align:center">where T : Foo</td>
+<td style="text-align:left">指定类型T必须派生自基类Foo</td>
+</tr>
+<tr>
+<td style="text-align:center">where T : new()</td>
+<td style="text-align:left">这是一个构造函数约束，指定类型T必须有一个默认构造函数</td>
+</tr>
+<tr>
+<td style="text-align:center">where T1 : T2</td>
+<td style="text-align:left">这个约束也可以指定类型T1派生自泛型类型T2。该约束也称为裸类型约束</td>
+</tr>
+</tbody>
+</table>
+<p>其他：</p>
+<ul>
+<li>只能为默认构造函数定义构造函数约束，不能为其他构造函数定义构造函数约束。</li>
+<li>在C#中，<code>where</code>子句的一个重要限制是，不能定义必须由泛型类型实现的运算符。运算符不能再借口中定义。在<code>where</code>子句中，只能定义基类、接口和默认构造函数。</li>
+</ul>
+<h3 id="9-复制数组"><a href="#9-复制数组" class="headerlink" title="9. 复制数组"></a>9. 复制数组</h3><ul>
+<li>如果数组的元素是值类型，调用Clone()方法就会复制所有值。如，int[] intArray1 = {1, 2}; int[] intArray2 = (int[])intArray1.Clone();其中intArray2数组的元素也变成了{1, 2}</li>
+<li>如果数组包含引用类型，则不复制元素，而只复制引用。</li>
+<li>除了使用Clone()方法之外，还可以使用Array.Copy()方法创建浅表副本。</li>
+<li>Clone()方法和Copy()方法有一个重要区别：Clone()方法会创建一个新数组，而Copy()方法必须传递阶数相同且有足够元素的已有数组。</li>
+<li>如果需要包含引用类型的数组的深层副本，就必须迭代数组并创建新对象。</li>
+</ul>
+<h3 id="10-Array类使用QuickSort算法对数组中的元素进行排序"><a href="#10-Array类使用QuickSort算法对数组中的元素进行排序" class="headerlink" title="10. Array类使用QuickSort算法对数组中的元素进行排序"></a>10. <code>Array</code>类使用<code>QuickSort</code>算法对数组中的元素进行排序</h3><p><code>Array</code>类中的Sort()方法需要数组中的元素实现<code>IComparable</code>接口。简单类型（如System.String和System.Int32）已经实现了IComparable接口。</p>
+<h3 id="11-元组"><a href="#11-元组" class="headerlink" title="11. 元组"></a>11. 元组</h3><ul>
+<li>数组合并了相同类型的对象，而元组合并了不同类型的对象。</li>
+<li><p><code>.NET 4</code>定义了8个泛型<code>Tuple</code>类和一个静态<code>Tuple</code>类，不同泛型<code>Tuple</code>类支持不同数量的元素。例如，<code>Tuple&lt;T1&gt;</code>包含一个元素，<code>Tuple&lt;T1, T2&gt;</code>包含两个元素，以此类推。代码示例:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TupleExample</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		TupleExample example = <span class="keyword">new</span> TupleExample();</span><br><span class="line">		<span class="keyword">var</span> result = example.Divide(<span class="number">5</span>, <span class="number">2</span>);</span><br><span class="line">		Console.WriteLine(<span class="string">"result of division: &#123;0&#125;, reminder: &#123;1&#125;"</span>, result.Item1, result.Item2);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> Tuple&lt; <span class="keyword">int</span>, <span class="keyword">int</span> &gt; Divide(<span class="keyword">int</span> dividend, <span class="keyword">int</span> divisor)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> result = dividend / divisor;</span><br><span class="line">		<span class="keyword">int</span> reminder = dividend % divisor;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> TupleExample.Create&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(result, reminder);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果元组包含项超过8个，就可以使用带8个参数的Tuple类定义。最后一个模板参数是TRest,表示必须给它传递一个元组，这样就可以创建带任意个参数的元组了。示例：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tuple = Tuple.Create&lt;<span class="keyword">string</span>, <span class="keyword">string</span>, <span class="keyword">string</span>, <span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">double</span>, Tuple&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt;(<span class="string">"Stephanie"</span>, <span class="string">"Alina"</span>, <span class="string">"Nagel"</span>, <span class="number">2009</span>, <span class="number">6</span>, <span class="number">2</span>, <span class="number">1.37</span>, Tuple.Create&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(<span class="number">52</span>, <span class="number">3490</span>));</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="12-运算符"><a href="#12-运算符" class="headerlink" title="12. 运算符"></a>12. 运算符</h3><ul>
+<li><code>is</code>运算符：可以检查对象是否与特定的类型兼容。“兼容”表示对象是该类型或者派生自该类型。</li>
+<li><code>as</code>运算符：用于执行引用类型的显示类型转换。如果要转换的类型与制定的类型兼容，转换就会成功进行；如果类型不兼容，<code>as</code>运算符就会返回<code>null</code>值。</li>
+<li><code>sizeof</code>运算符：使用该运算符可以确定栈中值类型需要的长度（单位是字节）；如果对于复杂类型（和非基元类型）使用该运算符，就需要把代码写在<code>unsafe</code>块中，如：<code>unsafe{Console.WriteLine(sizeof(Customer));}</code></li>
+<li>可空类型和运算符：通常可空类型与一元或二元运算符一起使用时，如果其中一个操作数或两个操作数都是<code>null</code>,其结果就是<code>null</code>。如：<br><code>int? a = null;
+int? b = a + 4; // b = null
+int? c = a * 5; // c = null</code></li>
+<li>空合并运算符（??）：该运算符提供了一种快捷方式，可以在处理可空类型和引用类型时表示<code>null</code>可能的值。这个运算符放在两个操作数之间，第一个操作数必须是一个可空类型或者引用类型；第二个操作数必须与第一个操作数的类型相同，或者可以隐含地转换为第一个操作数的类型。</li>
+</ul>
+<h3 id="13-比较引用类型的相等性"><a href="#13-比较引用类型的相等性" class="headerlink" title="13. 比较引用类型的相等性"></a>13. 比较引用类型的相等性</h3><ul>
+<li>ReferenceEquals()方法：该方法是一个静态方法，测试两个引用是否引用类的同一个实例，特别是两个引用是否包含内存中的相同地址。如果提供的两个引用引用同一个对象实例，则返回<code>true</code>，否则返回<code>false</code>。但是它认为<code>null</code>等于<code>null</code>。另外，该方法在应用于值类型时，它总是返回false，因为为了调用这个方法，值类型需要装箱到对象中。</li>
+<li>Equals()虚方法：Equals()虚方法的<code>System.Object</code>实现代码也可以比较引用。但因为这个方法是虚拟的，所以可以在自己的类中重写它，从而按值来比较对象。<strong>特别是如果希望类的实例用作字典中的键，就需要重写这个方法，以比较相关值。</strong> 否则，根据重写<code>Object.GetHashCode()</code>的方式，包含对象的字典类要么不工作，要么工作的效率非常低。在重写Equals()方法时要注意，重写的代码不会抛出异常。同理，这是因为如果抛出异常，字典类就会出问题，一些在内部调用这个方法的<code>.NET</code>基类也可能出问题。</li>
+<li>静态的Equals()方法：Equals()的静态版本与其虚拟实例版本的作用相同，其区别是静态版本带有两个参数，并对它们进行相等比较。这个方法可以处理两个对象中有一个是<code>null</code>的情况，因此，如果一个对象可能是<code>null</code>，这个方法就可以抛出异常，提供额外保护。静态重载版本首先要检查它传递的引用是否为<code>null</code>。如果他们都是<code>null</code>，就返回<code>true</code>(因为<code>null</code>与<code>null</code>相等)。如果只有一个引用是<code>null</code>，就返回<code>false</code>。如果两个引用实际上引用了某个对象，它就调用Equals()的虚拟实例版本。这表示在重写Equals()的实例版本时，其效果相当于也重写了静态版本。</li>
+<li>比较运算符（==）：最好将比较运算符看作严格的值比较和严格的引用比较之间的中间选项。在大多数情况下，下面的代码表示正在比较引用：<code>bool b = (x == y);// x, y object references</code></li>
+</ul>
+<h3 id="14-运算符重载"><a href="#14-运算符重载" class="headerlink" title="14. 运算符重载"></a>14. 运算符重载</h3><ul>
+<li>运算符重载的声明方式与方法相同，但<code>operator</code>关键字告诉编译器，它实际上是一个自定义的运算符重载，后面是相关运算符的实际符号，返回类型是在使用这个运算符时获得的类型。</li>
+<li>对于二元运算符（它带两个参数），如<code>+</code>和<code>-</code>运算符，第一个参数是运算符左边的值，第二个参数是运算符右边的值。</li>
+<li>一般把运算符左边的参数命名为<code>lhs</code>，运算符右边的参数命名为<code>rhs</code>。</li>
+<li>C#要求所有的运算符重载都声明为<code>public</code>和<code>static</code>，这表示它们与它们的类或结构相关联，而不是与某个特定实例相关联，所以运算符重载的代码体不能访问非静态类成员，也不能访问<code>this</code>标识符。</li>
+<li>C#语言要求成对重载比较运算符。即，如果重载了<code>==</code>,也就必须重载<code>!=</code>；否则会产生编译错误。另外，比较运算符必须返回布尔类型的值。这是它们与算术运算符的根本区别。</li>
+<li>在重载<code>==</code>和<code>!=</code>时，还必须重载从<code>System.Object</code>中继承的Equals()和GetHashCode()方法，否则会产生一个编译警告。原因是Equals()方法应实现与<code>==</code>运算符相同类型的相等逻辑。</li>
+</ul>
+<h3 id="15-委托"><a href="#15-委托" class="headerlink" title="15. 委托"></a>15. 委托</h3><ul>
+<li>理解委托的一个要点是它们的类型安全性非常高。</li>
+<li>理解委托的一种好方式是把委托当作这样一件事，它给方法的签名和返回类型指定名称。</li>
+<li><code>Action</code><ul>
+<li><code>Action</code>是无返回值的泛型委托。</li>
+<li><code>Action</code>表示无参，无返回值的委托</li>
+<li><code>Action&lt;int,string&gt;</code>表示有传入参数<code>int</code>,<code>string</code>无返回值的委托</li>
+<li><code>Action&lt;int,string,bool&gt;</code>表示有传入参数<code>int</code>,<code>string</code>,<code>bool</code>无返回值的委托</li>
+<li><code>Action&lt;int,int,int,int&gt;</code>表示有传入4个<code>int</code>型参数，无返回值的委托</li>
+<li><code>Action</code>至少0个参数，至多16个参数，无返回值。</li>
+</ul>
+</li>
+<li><code>Func</code><ul>
+<li><code>Func</code>是有返回值的泛型委托</li>
+<li><code>Func&lt;int&gt;</code>表示无参，返回值为int的委托</li>
+<li><code>Func&lt;object,string,int&gt;</code>表示传入参数为<code>object</code>, <code>string</code>返回值为int的委托</li>
+<li><code>Func&lt;object,string,int&gt;</code>表示传入参数为<code>object</code>, <code>string</code>返回值为int的委托</li>
+<li><code>Func&lt;T1,T2,,T3,int&gt;</code>表示传入参数为<code>T1</code>,<code>T2</code>,<code>T3</code>(泛型)返回值为<code>int</code>的委托</li>
+<li><code>Func</code>至少0个参数，至多16个参数，根据返回值泛型返回。必须有返回值，不可<code>void</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="16-Lambda表达式"><a href="#16-Lambda表达式" class="headerlink" title="16. Lambda表达式"></a>16. <code>Lambda</code>表达式</h3><ul>
+<li>只要有委托参数类型的地方，就可以使用<code>Lambda</code>表达式。或者说<code>Lambda</code>表达式可以用于类型是一个委托的任意地方。</li>
+<li>如果只有一个参数，只写出参数名就足够了。如果委托使用多个参数，就把参数名放在小括号中。为了方便可以在小括号中给变量添加参数类型。</li>
+<li>如果<code>Lambda</code>表达式只有一条语句，在方法块内就不需要花括号和<code>return</code>语句，因为编译器会添加一条隐式<code>return</code>语句。</li>
+</ul>
+<h3 id="17-正则表达式"><a href="#17-正则表达式" class="headerlink" title="17. 正则表达式"></a>17. 正则表达式</h3><p>常用的特定字符和转义序列如下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">符 号</th>
+<th style="text-align:left">含 义</th>
+<th style="text-align:center">示 例</th>
+<th style="text-align:left">匹配的示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">^</td>
+<td style="text-align:left">输入文本的开头</td>
+<td style="text-align:center">^B</td>
+<td style="text-align:left">B,但只能是文本中的第一个字符</td>
+</tr>
+<tr>
+<td style="text-align:center">\$</td>
+<td style="text-align:left">输入文本的结尾</td>
+<td style="text-align:center">X$</td>
+<td style="text-align:left">X,但只能是文本中的最后一个字符</td>
+</tr>
+<tr>
+<td style="text-align:center">.</td>
+<td style="text-align:left">除了换行符（\n）以外的所有单个字符</td>
+<td style="text-align:center">i.ation</td>
+<td style="text-align:left">isation、ization</td>
+</tr>
+<tr>
+<td style="text-align:center">*</td>
+<td style="text-align:left">可以重复0次或多次的前导字符</td>
+<td style="text-align:center">ra*t</td>
+<td style="text-align:left">rt、rat、raat和raaat等</td>
+</tr>
+<tr>
+<td style="text-align:center">+</td>
+<td style="text-align:left">可以重复1次或多次的前导字符</td>
+<td style="text-align:center">ra+t</td>
+<td style="text-align:left">rat、raat和raaat等（但不能是rt）</td>
+</tr>
+<tr>
+<td style="text-align:center">?</td>
+<td style="text-align:left">可以重复0次或1次的前导字符</td>
+<td style="text-align:center">ra?t</td>
+<td style="text-align:left">只有rt和rat匹配</td>
+</tr>
+<tr>
+<td style="text-align:center">s</td>
+<td style="text-align:left">任何空白字符</td>
+<td style="text-align:center">\sa</td>
+<td style="text-align:left">[space]a、\ta、\na（其中[space]表示空格，\t和\n都是转移字符）</td>
+</tr>
+<tr>
+<td style="text-align:center">S</td>
+<td style="text-align:left">任何不是空白的字符</td>
+<td style="text-align:center">\SF</td>
+<td style="text-align:left">aF、rF、cF，但不能是\tF</td>
+</tr>
+<tr>
+<td style="text-align:center">b</td>
+<td style="text-align:left">字边界</td>
+<td style="text-align:center">ion\b</td>
+<td style="text-align:left">以ion结尾的任何字</td>
+</tr>
+<tr>
+<td style="text-align:center">B</td>
+<td style="text-align:left">不是字边界的任意位置</td>
+<td style="text-align:center">\BX\B</td>
+<td style="text-align:left">字中间的任何X</td>
+</tr>
+</tbody>
+</table>
+<p>可以把替换的字符放在方括号中，请求匹配包含这些字符。例如，<code>[1|c]</code>表示字符可以是<code>1</code>或<code>c</code>。在方括号中，也可以指定一个范围，例如<code>[a-z]</code>表示所有的小写字母，<code>[A-E]</code>表示<code>A</code>~<code>E</code>之间的所有大写字母（包括字母<code>A</code>和<code>E</code>），<code>[0-9]</code>表示一个数字。如果要搜索一个整数，就可以编写<code>[0-9]+</code>。</p>
+<h3 id="18-集合"><a href="#18-集合" class="headerlink" title="18. 集合"></a>18. 集合</h3><ul>
+<li>链表。<code>LinkedList&lt;T&gt;</code>是一个双向链表，其元素指向它前面和后面的元素。其特点是：插入快，查找慢。</li>
+<li>有序列表。如果需要基于键对所需集合排序，就可以使用<code>SortedList&lt;TKey,TValue&gt;</code>类，这个类按照键给元素排序。</li>
+<li>字典。<ul>
+<li>字典的主要特征是能根据键快速查找值。也可以自由添加和删除元素，这点有点像<code>List&lt;T&gt;</code>类，但没有在内存中移动后续元素的性能开销。</li>
+<li>用作字典中键的类型必须重写Object类的GetHashCode()方法。只要字典类需要确定元素的位置，它就要调用GetHashCode()方法。GetHashCode()方法返回的<code>int</code>由字典用于计算在对应位置放置元素的索引。</li>
+<li>字典的性能取决于GetHashCode()方法的实现代码。</li>
+<li>除了实现GetHashCode()方法之外，键类型还必须实现<code>IEquatable&lt;T&gt;.Equals()</code>方法，或重写<code>Object</code>类的Equals()方法。因为不同的键对象可能返回相同的散列代码，所以字典使用Equals()方法来比较键。</li>
+</ul>
+</li>
+</ul>
+<h3 id="19-GetHashCode-方法的实现代码必须满足如下要求："><a href="#19-GetHashCode-方法的实现代码必须满足如下要求：" class="headerlink" title="19. GetHashCode()方法的实现代码必须满足如下要求："></a>19. GetHashCode()方法的实现代码必须满足如下要求：</h3><ul>
+<li>相同的对象应总是返回相同的值。</li>
+<li>不同的对象可以返回相同的值。</li>
+<li>它应执行得比较快，计算的开销不大。</li>
+<li>它不能抛出异常。</li>
+<li>它应至少使用一个实例字段。</li>
+<li>散列代码值应平均分布在<code>int</code>可以存储的整个数字范围上。</li>
+<li>散列代码最好在对象的生存期中不发生变化。</li>
+</ul>
+<h3 id="20-Equal-方法重写"><a href="#20-Equal-方法重写" class="headerlink" title="20. Equal()方法重写"></a>20. Equal()方法重写</h3><p>如果为Equals()方法提供了重写版本，但没有提供GetHashCode()方法的重写版本，C#编译器就会显示一个编译警告。</p>
+<h3 id="21-LINQ"><a href="#21-LINQ" class="headerlink" title="21. LINQ"></a>21. <code>LINQ</code></h3><ul>
+<li>查询表达式必须以<code>from</code>子句开头，以<code>select</code>或<code>group</code>子句结束。在这两个子句之间，可以使用<code>where</code>、<code>orderby</code>、<code>join</code>、<code>let</code>和其他<code>from</code>子句。</li>
+<li><code>LINQ</code>为<code>IEnumerable&lt;T&gt;</code>接口提供了各种扩展方法，以便用户在实现了该接口的任意集合上使用<code>LINQ</code>查询。</li>
+</ul>
+<h3 id="22-释放非托管的资源"><a href="#22-释放非托管的资源" class="headerlink" title="22. 释放非托管的资源"></a>22. 释放非托管的资源</h3><ul>
+<li>在定义一个类时，可以使用两种机制来自动释放非托管的资源。这些机制常常放在一起实现，因为每种机制都为问题提供了略微不同的解决办法。</li>
+<li>释放非托管资源的两种机制：声明一个析构函数（或终结器）；在类中实现<code>System.IDisposable</code>接口。</li>
+</ul>
+<h3 id="23-析构函数"><a href="#23-析构函数" class="headerlink" title="23. 析构函数"></a>23. 析构函数</h3><ul>
+<li>在销毁C++对象时，其析构函数会立即运行。但由于使用C#时垃圾回收器的工作方式，无法确定C#对象的析构函数合适执行。所以，不能在析构函数中放置需要在某一时刻运行的代码，也不应使用能以任意顺序对不同类的实例调用的析构函数。如果对象占用了宝贵而重要的资源，应尽快释放这些资源，此时就不能等待垃圾回收器来释放了。</li>
+<li>C#析构函数的实现会延迟对象最终从内存中删除的时间。没有析构函数的对象会在垃圾回收器的一次处理中从内存中删除，但有析构函数的对象需要两次处理才能销毁：第一次调用析构函数时，没有删除对象，第二次调用才真正删除对象。另外，运行库使用一个线程来执行所有对象的Finalize()方法。如果频繁使用析构函数，而且使用它们执行长时间的清理任务，对性能的影响就会非常显著。</li>
+</ul>
+<h3 id="24-IDisposable接口"><a href="#24-IDisposable接口" class="headerlink" title="24. IDisposable接口"></a>24. IDisposable接口</h3><ul>
+<li>在C#中，推荐使用<code>System.IDisposable</code>接口替代析构函数。<code>IDisposable</code>接口定义了一种模式（具有语言级的支持）,该模式为释放非托管的资源提供了确定的机制，并避免产生析构函数固有的与垃圾回收器相关的问题。<code>IDisposable</code>接口声明了一个Dispos()方法，它不带参数，返回<code>void</code>。</li>
+<li>Dispose()方法的实现代码显式地释放由对象直接使用的所有非托管资源，并在所有也实现<code>IDisposable</code>接口的封装对象上调用Dispose()方法。这样，Dispose()方法为何时释放非托管资源提供了精确的控制。</li>
+</ul>
+<blockquote>
+<p>以上是《C#高级编程》前二十章的读书笔记。笔记摘录了笔者认为易忘的知识点，方便以后查阅和复习。摘抄整理过程中难免疏忽和遗漏，如有错误不当之处，请不吝指出，在此感激不尽！</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Sheh伟伟 WeChat Pay"/>
+        <p>微信打赏</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Sheh伟伟 Alipay"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Sheh伟伟
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://davidsheh.github.io/2016/03/03/「C_Sharp高级编程」读书笔记/" title="「C#高级编程」读书笔记">http://davidsheh.github.io/2016/03/03/「C_Sharp高级编程」读书笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C#</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/03/「代码整洁之道」读书笔记/" rel="next" title="「代码整洁之道」读书笔记">
+                <i class="fa fa-chevron-left"></i> 「代码整洁之道」读书笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/03/「重构：改善代码的既有设计」读书笔记/" rel="prev" title="「重构：改善代码的既有设计」读书笔记">
+                「重构：改善代码的既有设计」读书笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "1",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      },
+      "slide": {
+        "bdImg": "5",
+        "bdPos": "left",
+        "bdTop": "100"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          <!-- ad start -->
+          
+
+          <!-- ad end -->
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/4453301?v=4&s=460"
+               alt="Sheh伟伟" />
+          <p class="site-author-name" itemprop="name">Sheh伟伟</p>
+           
+              <p class="site-description motion-element" itemprop="description">做个有态度的程序员</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/DavidSheh" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1586558567/profile?topnav=1&wvr=6&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="764150976@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-C-类型的取值范围"><span class="nav-number">1.</span> <span class="nav-text">1. C#类型的取值范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-访问限制符"><span class="nav-number">2.</span> <span class="nav-text">2. 访问限制符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-C-常见的修饰符"><span class="nav-number">3.</span> <span class="nav-text">3. C#常见的修饰符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-结构体"><span class="nav-number">4.</span> <span class="nav-text">4. 结构体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-扩展方法"><span class="nav-number">5.</span> <span class="nav-text">5. 扩展方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-var关键字。"><span class="nav-number">6.</span> <span class="nav-text">6. var关键字。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-密封类和密封方法"><span class="nav-number">7.</span> <span class="nav-text">7. 密封类和密封方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-约束"><span class="nav-number">8.</span> <span class="nav-text">8. 约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-复制数组"><span class="nav-number">9.</span> <span class="nav-text">9. 复制数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-Array类使用QuickSort算法对数组中的元素进行排序"><span class="nav-number">10.</span> <span class="nav-text">10. Array类使用QuickSort算法对数组中的元素进行排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-元组"><span class="nav-number">11.</span> <span class="nav-text">11. 元组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-运算符"><span class="nav-number">12.</span> <span class="nav-text">12. 运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-比较引用类型的相等性"><span class="nav-number">13.</span> <span class="nav-text">13. 比较引用类型的相等性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-运算符重载"><span class="nav-number">14.</span> <span class="nav-text">14. 运算符重载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-委托"><span class="nav-number">15.</span> <span class="nav-text">15. 委托</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-Lambda表达式"><span class="nav-number">16.</span> <span class="nav-text">16. Lambda表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-正则表达式"><span class="nav-number">17.</span> <span class="nav-text">17. 正则表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-集合"><span class="nav-number">18.</span> <span class="nav-text">18. 集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-GetHashCode-方法的实现代码必须满足如下要求："><span class="nav-number">19.</span> <span class="nav-text">19. GetHashCode()方法的实现代码必须满足如下要求：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-Equal-方法重写"><span class="nav-number">20.</span> <span class="nav-text">20. Equal()方法重写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-LINQ"><span class="nav-number">21.</span> <span class="nav-text">21. LINQ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-释放非托管的资源"><span class="nav-number">22.</span> <span class="nav-text">22. 释放非托管的资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-析构函数"><span class="nav-number">23.</span> <span class="nav-text">23. 析构函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-IDisposable接口"><span class="nav-number">24.</span> <span class="nav-text">24. IDisposable接口</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheh伟伟</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://davidsheh.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://davidsheh.github.io/2016/03/03/「C_Sharp高级编程」读书笔记/';
+          this.page.identifier = '2016/03/03/「C_Sharp高级编程」读书笔记/';
+          this.page.title = '「C#高级编程」读书笔记';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://davidsheh.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

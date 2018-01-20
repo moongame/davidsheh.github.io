@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="pvbMvn4BVpZBxOb13ApVEecjLIYZxQNoDNPTP1sMAz0" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="重构," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sheh伟伟的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="第1章 重构，第一个案例 代码块俞小，代码的功能就俞容易管理，代码的处理和移动也就俞轻松。（功能也就越单一） 任何不会被修改的变量都可以被当成参数传入新的函数，至于会被修改的变量需要慎重。如果只有一个变量会被修改，可以把它当做返回值。 绝大多数情况下，函数应该放在它所使用的数据的所属对象内。 最好不要在另一个对象的属性基础上运用switch语句。如果不得不使用，也应该在对象自己的数据上使用，而不是">
+<meta name="keywords" content="重构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「重构：改善代码的既有设计」读书笔记">
+<meta property="og:url" content="http://davidsheh.github.io/2016/03/03/「重构：改善代码的既有设计」读书笔记/index.html">
+<meta property="og:site_name" content="Sheh伟伟的博客">
+<meta property="og:description" content="第1章 重构，第一个案例 代码块俞小，代码的功能就俞容易管理，代码的处理和移动也就俞轻松。（功能也就越单一） 任何不会被修改的变量都可以被当成参数传入新的函数，至于会被修改的变量需要慎重。如果只有一个变量会被修改，可以把它当做返回值。 绝大多数情况下，函数应该放在它所使用的数据的所属对象内。 最好不要在另一个对象的属性基础上运用switch语句。如果不得不使用，也应该在对象自己的数据上使用，而不是">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-01-20T08:18:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「重构：改善代码的既有设计」读书笔记">
+<meta name="twitter:description" content="第1章 重构，第一个案例 代码块俞小，代码的功能就俞容易管理，代码的处理和移动也就俞轻松。（功能也就越单一） 任何不会被修改的变量都可以被当成参数传入新的函数，至于会被修改的变量需要慎重。如果只有一个变量会被修改，可以把它当做返回值。 绝大多数情况下，函数应该放在它所使用的数据的所属对象内。 最好不要在另一个对象的属性基础上运用switch语句。如果不得不使用，也应该在对象自己的数据上使用，而不是">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://davidsheh.github.io/2016/03/03/「重构：改善代码的既有设计」读书笔记/"/>
+
+
+
+
+
+  <title>「重构：改善代码的既有设计」读书笔记 | Sheh伟伟的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104471088-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e2cb29ab0418c83c37bb4062cd58b1d4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sheh伟伟的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Attitude is a little thing that makes a big difference</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://davidsheh.github.io/2016/03/03/「重构：改善代码的既有设计」读书笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheh伟伟">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/4453301?v=4&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheh伟伟的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">「重构：改善代码的既有设计」读书笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-03T19:14:28+08:00">
+                2016-03-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/读书笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">读书笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/03/03/「重构：改善代码的既有设计」读书笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/03/03/「重构：改善代码的既有设计」读书笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="第1章-重构，第一个案例"><a href="#第1章-重构，第一个案例" class="headerlink" title="第1章 重构，第一个案例"></a>第1章 重构，第一个案例</h3><ol>
+<li>代码块俞小，代码的功能就俞容易管理，代码的处理和移动也就俞轻松。（功能也就越单一）</li>
+<li>任何不会被修改的变量都可以被当成参数传入新的函数，至于会被修改的变量需要慎重。如果只有一个变量会被修改，可以把它当做返回值。</li>
+<li>绝大多数情况下，函数应该放在它所使用的数据的所属对象内。</li>
+<li>最好不要在另一个对象的属性基础上运用switch语句。如果不得不使用，也应该在对象自己的数据上使用，而不是在别人的数据上使用。</li>
+<li>使用继承来适当组织类关系后，可以用多态取代switch语句。</li>
+<li>一部影片可以在生命周期内修改自己的分类，一个对象却不能在生命周期内修改自己所属的类。</li>
+</ol>
+<h3 id="第2章-重构原则"><a href="#第2章-重构原则" class="headerlink" title="第2章 重构原则"></a>第2章 重构原则</h3><ol>
+<li>三次法则：第一次做某件事时只管去做；第二次做类似的事会产生反感，但无论如何还是可以去做；第三次在做类似的是，你就应该重构。事不过三，三则重构。</li>
+<li>在重构中引入间接层的某些价值：<ul>
+<li>允许逻辑共享</li>
+<li>分开解释意图和实现</li>
+<li>隔离变化</li>
+<li>封装条件逻辑</li>
+</ul>
+</li>
+<li>封装条件逻辑。对象有一种奇妙的机制：多态消息，可以灵活而清晰地表达条件逻辑。将条件逻辑转化为消息形式，往往能降低代码的重复、增加清晰度并提高弹性。</li>
+</ol>
+<h3 id="第3章-代码的坏味道"><a href="#第3章-代码的坏味道" class="headerlink" title="第3章 代码的坏味道"></a>第3章 代码的坏味道</h3><ol>
+<li>重复代码：设法合二为一<ul>
+<li>同一个类的两个函数还有相同的表达式，这时需要提炼出重复代码。</li>
+<li>两个互为兄弟的子类内含有相同的表达式，可以提炼相同代码，并放到父类中。如果只是代码间相似，并非完全相同，那么可以将相似部分和差异部分拆开，构成单独的函数。然后你可以使用模板方法的设计模式。</li>
+<li>如果两个毫不相关的类中出现重复代码，则可以将重复代码提炼成一个函数放到一个独立类中或者只放在某一个类中（总之要放在合适的地方），然后其他类都去调用这个函数。</li>
+</ul>
+</li>
+<li>过长函数<br> 一条原则：每当感觉需要以注释来说明点什么的时候，我们就把需要说明的东西写进一个独立函数中，并以其用途（而非实现手法）命名。哪怕替换后的函数调用动作比函数自身还长，只要函数名称能够解释其用途，我们也该毫不犹豫的那么做。关键不在于函数的长度，而在于函数“做什么”和“如何做”之间的语义距离。</li>
+<li>过大的类<br> 类内如果有太多代码，也是代码重复、混乱并最终走向死亡的源头。最简单的解决方案是把多余的东西消弭于类内部。如果有五个“百行函数”，它们之间很多代码都相同，那么或许你可以把它们编程五个“十行函数”和十个提炼出来的“双行函数”。</li>
+<li>过长参数列：用对象做参数来减少参数个数<ul>
+<li>有了对象，就不必把函数需要的所有东西都以参数传递给它了，只需传给它足够的、让函数能从中获得自己需要的东西就行了。函数需要的东西多半可以在函数宿主类中找到。如果将对象传递给函数，大多数修改都将没有必要，因为你很可能只需（在函数内）增加一两条请求，就能得到更多的数据。</li>
+<li>这里有一个重要的例外：有时候你明显不希望造成“被调用对象”与“较大对象”间的某种依赖关系。这时候将数据从对象中拆解出来单独作为参数，也很合情合理。</li>
+</ul>
+</li>
+<li>发散式变化：一个类受多种变化的影响<br> 如果某个类经常因为不同的原因在不同的方向上发生变化，发散式变化的坏味道就出现了。针对某一外界变化的所有相应修改，都只应该发生在单一类中，而这个新类内的所有内容都应该反应次变化。</li>
+<li>霰弹式修改：一种变化引发多个类相应修改<br> 如果每遇到某种变化，你都必须在许多不同的类内做出许多小修改，你所面临的坏味道就是霰弹式修改。这种情况下，可以把所有需要修改的代码放进同一个类，如果没有合适的类可放，就创造一个。</li>
+<li>依恋情节<ul>
+<li>对象技术的全部要点在于：这是一种“将数据和对数据的操作行为包装在一起”的技术。</li>
+<li>有一种经典的气味是：函数对某个类的兴趣高过对自己所处类的兴趣。这种孺慕之情最通常的焦点便是数据。</li>
+<li>处理这种坏味道的原则是：判断哪个类拥有最多被此函数实用的数据，然后就把这个函数和那些数据摆在一起。</li>
+<li>最根本的原则是：将总是一起变化的东西放在一块。</li>
+</ul>
+</li>
+<li>数据泥团：总是绑在一起的数据应该拥有属于它们自己的对象<br> 一个好的评判办法是：删掉众多数据中的一项，其他数据有没有因此而失去意义？如果他们不再有意义，这就是一个明确信号：你应该为它们产生一个新对象。</li>
+<li>基本类型偏执：将数据组织成有意义的形式，不偏执于基本类型<ul>
+<li>对象技术的新手通常不愿意在小任务上运用小对象。</li>
+<li>如果你有一组应该总是被放在一起的字段（基本类型的数据），那么可以尝试将这组数据放到一个单独类中变成结构类型的数据</li>
+</ul>
+</li>
+<li>switch语句<br>面向对象程序的一个最明显特征就是：少用switch（或case）语句。从本质上说，switch语句的问题在于重复。面向对象中的多态概念可为此带来优雅的解决办法。</li>
+<li>平行继承体系<ul>
+<li>如果你发现某个继承体系的类名称前缀和另一个继承体系的类名称前缀完全相同，便是问到了这种坏味道。</li>
+<li>消除这种重复性的一般策略是：让一个继承体系的实例引用另一个继承体系的实例。</li>
+</ul>
+</li>
+<li>冗赘类</li>
+<li>夸夸其谈未来性<br>当有人说“噢， 我想我们总有一天需要做这件事”，并因而企图以各式各样的钩子和特殊情况来处理一些非必要的事情，这种坏味道就出现了。</li>
+<li>令人迷惑的临时字段</li>
+<li>过度耦合的消息链</li>
+<li>中间人</li>
+<li>狎昵关系</li>
+<li>异曲同工的类    </li>
+<li>不完美的类库</li>
+<li>纯稚的数据类<ul>
+<li>纯稚的数据类是指：它们拥有一些字段，以及用于访问（读写）这些字段的函数，除此之外一无长物。</li>
+<li>这种类如果get/set方法均是public的，则需要引起注意，应该进行适当的封装，而不是全部公有化。</li>
+</ul>
+</li>
+<li>被拒绝的遗赠<br>子类应该继承超类的函数和数据。但如果他们不想或不需要继承所有的函数和数据，则应该为这个子类新建一个兄弟类，把所有用不到的函数和数据放到兄弟类中，他们共享的数据和函数则放到共同的超类中。</li>
+<li>过多的注释<ul>
+<li>当你感觉需要撰写注释时，请先尝试重构，试着让所有注释都变得多余</li>
+<li>如果你不知道该做什么的，这才是注释的良好运用时机。</li>
+</ul>
+</li>
+</ol>
+<h3 id="第4章-构筑测试体系"><a href="#第4章-构筑测试体系" class="headerlink" title="第4章 构筑测试体系"></a>第4章 构筑测试体系</h3><pre><code>确保所有测试都完全自动化，让他们检查自己的测试结果。
+</code></pre><h3 id="第5章-重构列表"><a href="#第5章-重构列表" class="headerlink" title="第5章 重构列表"></a>第5章 重构列表</h3><h3 id="第6章-重新组织函数"><a href="#第6章-重新组织函数" class="headerlink" title="第6章 重新组织函数"></a>第6章 重新组织函数</h3><ol>
+<li>提炼函数<ul>
+<li>动机：首先，如果每个函数的粒度都很小，那么函数被服用的机会就更大；其次，这回是高层函数读起来就像一系列注释；再次，如果函数都是细粒度，那么函数的覆写也会更容易些。函数的长度不是问题，关键在于函数名称和函数本体之间的语义距离。如果提炼可以强化代码的清晰度，那么就去做，就算函数名称比提炼出来的代码还长也无所谓。</li>
+<li>做法：创造一个新函数，根据这个函数的意图来对它命名（以它“做什么”来命名，而不是以它“怎样做”命名）。</li>
+</ul>
+</li>
+<li>内联函数</li>
+<li>内联临时变量</li>
+<li>引入解释性变量<br> 将复杂表达式（或其中一部分）的结果放进一个临时变量，以此变量名称来解释表达式用途。</li>
+<li>分解临时变量</li>
+<li>移除对参数的赋值</li>
+<li>以函数对象取代函数</li>
+<li>替换算法</li>
+</ol>
+<h3 id="第7章-在对象之间搬移特性"><a href="#第7章-在对象之间搬移特性" class="headerlink" title="第7章 在对象之间搬移特性"></a>第7章 在对象之间搬移特性</h3><ol>
+<li>在对象的设计过程中，“决定把责任放在哪儿”即使不是最重要的事，也是最重要的事之一。</li>
+<li>搬移函数</li>
+<li>搬移字段</li>
+<li>提炼类</li>
+<li>将类内联化</li>
+<li>隐藏委托关系</li>
+<li>移除中间人</li>
+<li>引入外加函数</li>
+<li>引入本地扩展</li>
+</ol>
+<h3 id="第8章-重新组织数据"><a href="#第8章-重新组织数据" class="headerlink" title="第8章 重新组织数据"></a>第8章 重新组织数据</h3><ol>
+<li>自封装字段</li>
+<li>以对象取代数据值</li>
+<li>将值对象改为引用对象</li>
+<li>将引用对象改为值对象<ul>
+<li>值对象有一个非常重要的特性：它们应该是不可变的。</li>
+<li>定义了equals()，就必须同时定义hashCode()。实现hashCode()有个简单的办法：读取equals()使用的所有字段的hash码，然后对它们进行按位异或（^）操作。</li>
+</ul>
+</li>
+<li>以对象取代数组<blockquote>
+<p>小结：用对象替代数组的好处就是就对数组的各种操作都可以封装起来。因此，对于那些需要各种操作的数组，最好封装起来。</p>
+</blockquote>
+</li>
+<li>复制“被监视数据”</li>
+<li>将单向关联改为双向关联</li>
+<li>将双向关联改为单向关联</li>
+<li>以字面常量取代魔法数</li>
+<li>封装字段</li>
+<li>封装集合</li>
+<li>以数据类取代记录</li>
+<li>以类取代类型码</li>
+<li>以子类取代类型码</li>
+<li>以State/Strategy取代类型码</li>
+<li>以字段取代子类</li>
+</ol>
+<h3 id="第9章-简化条件表达式"><a href="#第9章-简化条件表达式" class="headerlink" title="第9章 简化条件表达式"></a>第9章 简化条件表达式</h3><ol>
+<li>分解条件表达式<blockquote>
+<p>如果条件表达式中的条件太多太长，则可以把条件抽取成一个函数，增加代码可读性。</p>
+</blockquote>
+</li>
+<li>合并条件表达式<ul>
+<li>如果检查条件各不相同，最终行为却一致，就应该使用“逻辑或”和“逻辑与”将他们合并为一个条件表达式。</li>
+<li>如果你认为这些检查的确彼此独立，的确不应该被视为同一次检查，那么就不要使用本项重构。</li>
+</ul>
+</li>
+<li>合并重复的条件片段</li>
+<li>移除控制标记<br> 适当的运用break语句和continue语句可以取代标志位的使用</li>
+<li>以卫语句取代嵌套条件表达式<ul>
+<li>卫语句，是指在方法最终返回语句前，加入其它返回语句（return语句）</li>
+<li>拆分条件，然后加入适当的卫语句，以减少条件的嵌套层数</li>
+<li>将条件反转，然后加入适当的卫语句，以减少条件的嵌套层数</li>
+</ul>
+</li>
+<li>以多态取代条件表达式</li>
+<li>引入<code>Null</code>对象</li>
+<li>引入断言</li>
+</ol>
+<h3 id="第10章-简化函数调用"><a href="#第10章-简化函数调用" class="headerlink" title="第10章 简化函数调用"></a>第10章 简化函数调用</h3><ol>
+<li>函数改名</li>
+<li>添加参数</li>
+<li>移除参数</li>
+<li>将查询函数和修改函数分离</li>
+<li>令函数携带参数</li>
+<li>以明确函数取代参数</li>
+<li>保持对象完整<ul>
+<li>有时候，你会将来自同一对象的若干项数据作为参数，传递给某个函数。这样做的问题在于：万一将来被调用的函数需要新的数据项，你就必须查找并修改对此函数的所有调用。如果你把这些数据所属的整个对象传给函数，可以避免这种尴尬的处境，因为被调用函数可以向那个参数对象请求任何它想要的信息。</li>
+<li>如果被调用函数使用了来自另一个对象的很多项数据，这可能意味该函数实际上应该被定义在那些数据所属的对象中。</li>
+</ul>
+</li>
+<li>以函数取代参数<ul>
+<li>如果函数可以通过其他途径获得参数值，那么它就不应该通过参数取得该值。</li>
+<li>过长的参数列会增加程序阅读者的理解难度，因此我们应该尽可能缩短参数列的长度。</li>
+</ul>
+</li>
+<li>引入参数对象<br> 某些参数总是很自然地同时出现，这时，可以用一个对象取代这些参数。</li>
+<li>移除设值函数<ul>
+<li>类中的某个字段应该在对象创建时被设值，然后就不再改变。这样的字段应该去掉其对应的设值函数。</li>
+<li>如果你为某个字段提供了设值函数，这就暗示这个字段值可以被改变。如果你不希望在对象创建之后此字段还有机会被改变，那就不要为它提供设值函数（同时该字段设为<code>final</code>）。这样你的意图会更加清晰，并且可以排除其值被修改的可能性——这种可能性往往是非常大的。</li>
+</ul>
+</li>
+<li>隐藏函数<ul>
+<li>不会被其他任何类用到的函数的访问类型应该为<code>private</code>。</li>
+<li>尽可能降低所有函数的可见度。</li>
+</ul>
+</li>
+<li>以工厂函数取代构造函数<ul>
+<li>在派生子类的过程中以工厂函数取代类型码。</li>
+<li>如果要根据类型来创建不同的对象，这些对象有共同的父类，则可以在父类中添加一个工厂函数来创建不同的对象。</li>
+</ul>
+</li>
+<li>封装向下转型<br>如果某个函数返回的对象，需要由函数调用者执行向下转型，则可以将向下转型动作移到函数中。</li>
+<li>以异常取代错误码</li>
+<li>以测试取代异常</li>
+</ol>
+<h3 id="第11章-处理概括关系"><a href="#第11章-处理概括关系" class="headerlink" title="第11章 处理概括关系"></a>第11章 处理概括关系</h3><ol>
+<li><p>字段上移</p>
+<ul>
+<li>如果两个子类拥有相同的字段，则将该字段移至超类。</li>
+<li>如果这些字段是<code>private</code>的，你必须将超类的字段声明为<code>protected</code>，这样子类才能引用它。</li>
+</ul>
+</li>
+<li><p>将函数上移</p>
+<ul>
+<li>有些函数在各个子类中产生完全相同的结果，则将该函数移至超类。</li>
+<li>如果你使用的是一种强类型语言，而待提升函数又调用了一个只出现于子类而未出现于超类的函数，你可以在超类中为被调用函数声明一个抽象函数。</li>
+</ul>
+</li>
+<li>构造函数本体上移<br> 如果在各个子类中拥有一些构造函数，并且它们的本体几乎完全一致。那么可以在超类中新建一个构造函数，并在子类构造函数中调用它。</li>
+<li>函数下移<br> 如果超类中的某个函数只与部分（而非全部）子类有关，则将这个函数移到相关的那些子类中去。</li>
+<li>字段下移<br> 超类中的某个字段只被部分（而非全部）子类用到，则将这个字段移到需要它的那些子类去。</li>
+<li>提炼子类<br> 如果类中的某些特性只被某些（而非全部）实例用到，则新建一个子类，将上面所说的那一部分特性移到子类中。</li>
+<li>提炼超类<br> 如果两个类有相似特性，则为这两个类建立一个超类，将相同特性移至超类。</li>
+<li>提炼接口<br> 如果某各类在不同环境下扮演截然不同的角色，使用接口就是个好主意。</li>
+<li>折叠继承体系<br> 如果超类和子类之间无太大区别，则将它们合为一体。</li>
+<li>塑造模板函数<br>你有一些子类，其中相应的某些函数以相同的顺序执行类似的操作，但各个操作的细节上有所不同。将这些操作分别放进独立函数中，并保持它们都有相同的签名，于是原函数也就变得相同了。然后将原函数上移至超类。</li>
+<li>以委托取代继承</li>
+<li>以继承取代委托</li>
+</ol>
+<h3 id="第12章-大型重构"><a href="#第12章-大型重构" class="headerlink" title="第12章 大型重构"></a>第12章 大型重构</h3><ol>
+<li>梳理并分解继承体系<ul>
+<li>如果某个继承体系同时承担两项责任，则可以建立两个继承体系，并通过委托关系让其中一个可以调用另一个。</li>
+<li>要指出继承体系是否承担了两项不同的责任并不困难：如果继承体系中的某一特定层级上的所有类，其子类名称都以相同的形容词开始，那么这个体系可能就是承担着两项不同的责任。</li>
+</ul>
+</li>
+<li>将过程化设计转化为对象设计</li>
+<li>将领域和表述/显示分离<br> 某些GUI类之中包含了领域逻辑，将领域逻辑分离出来，为它们建立独立的领域类。</li>
+<li>提炼继承体系<br> 如果你有某个类做了太多工作，其中一部分工作是以大量条件表达式完成的，那么可以建立继承体系，以一个子类表示一种特殊情况。</li>
+</ol>
+<h3 id="第13章-重构，复用与现实"><a href="#第13章-重构，复用与现实" class="headerlink" title="第13章 重构，复用与现实"></a>第13章 重构，复用与现实</h3><ol>
+<li>现实的检验</li>
+<li>为什么开发者不愿意重构他们的程序</li>
+<li>再论现实检验</li>
+<li>重构的资源和参考资料</li>
+<li>从重构联想到软件复用和技术传播</li>
+</ol>
+<h3 id="第14章-重构工具"><a href="#第14章-重构工具" class="headerlink" title="第14章 重构工具"></a>第14章 重构工具</h3><ol>
+<li>使用工具进行重构</li>
+<li>重构工具的技术标准</li>
+<li>重构工具的实用标准</li>
+</ol>
+<h3 id="第15章-总结"><a href="#第15章-总结" class="headerlink" title="第15章 总结"></a>第15章 总结</h3><p>###要点列表</p>
+<ol>
+<li>如果你发现自己需要为程序添加一个特性，而代码结构使你无法很方便地达成目的，那就先重构那个程序，使特性的添加比较容易进行，然后再添加新特性。</li>
+<li>重构前，先检查自己是否有一套可靠的测试机制。这些测试必须有自我检验能力。</li>
+<li>重构技术就是以微小的步伐修改程序。如果你犯下错误，很容易便可发现它。</li>
+<li>任何一个傻瓜都能写出计算机可以理解的代码。唯有写出人类容易理解的代码，才是优秀程序员。</li>
+<li>重构（名词）：对软件内部结构的一种调整，目的是在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本。</li>
+<li>重构（动词）：使用一系列重构手法，在不改变软件可观察行为的前提下，调整其结构。</li>
+<li>事不过三，三则重构</li>
+<li>不要过早发布接口。请修改你的代码所有权政策，使重构更顺畅。</li>
+<li>当你感觉需要撰写注释时，请先尝试重构，试着让所有注释都变得多余。</li>
+<li>确保所有测试都完全自动化，让它们检查自己的测试结果。</li>
+<li>一套测试就是一个强大的<code>bug</code>侦测器，能够大大缩减查找<code>bug</code>所需要的时间。</li>
+<li>频繁地运行测试。每次编译请把测试也考虑进去——每天至少执行每个测试一次。</li>
+<li>每当你收到<code>bug</code>报告，请先写一个单元测试来暴露这只<code>bug</code>。</li>
+<li>编写未臻完善的测试并实际运行，好过对完美测试的无尽等待。</li>
+<li>考虑可能出错的边界条件，把测试火力集中在那儿。</li>
+<li>当事情被大家认为应该会出错时，别忘了检查是否抛出了预期的异常。</li>
+<li>不要因为测试无法捕捉所有<code>bug</code>就不写测试，因为测试的确可以捕捉到大多数<code>bug</code>。</li>
+</ol>
+<blockquote>
+<p>对于比较简单或者笔者暂时还没有很好理解的部分，只是一笔带过；而对于笔者在工作中遇到过相似问题的地方，则摘录地比较详细。《重构：改善代码的既有设计》一书非常经典，需要阅读、实践、再阅读、再实践。如果你也是一个注重代码简洁、美观和高效的程序员，那么这本书一定不能错过，深入阅读一定能提升代码的质量。本文会在后续继续更新完善，剔除简单和不常用的部分，完善和保留实用的部分。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Sheh伟伟 WeChat Pay"/>
+        <p>微信打赏</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Sheh伟伟 Alipay"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Sheh伟伟
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://davidsheh.github.io/2016/03/03/「重构：改善代码的既有设计」读书笔记/" title="「重构：改善代码的既有设计」读书笔记">http://davidsheh.github.io/2016/03/03/「重构：改善代码的既有设计」读书笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/重构/" rel="tag"># 重构</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/03/「C_Sharp高级编程」读书笔记/" rel="next" title="「C#高级编程」读书笔记">
+                <i class="fa fa-chevron-left"></i> 「C#高级编程」读书笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/05/「Unity游戏开发」向量在游戏开发中的应用（一）/" rel="prev" title="「Unity游戏开发」向量在游戏开发中的应用（一）">
+                「Unity游戏开发」向量在游戏开发中的应用（一） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "1",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      },
+      "slide": {
+        "bdImg": "5",
+        "bdPos": "left",
+        "bdTop": "100"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          <!-- ad start -->
+          
+
+          <!-- ad end -->
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/4453301?v=4&s=460"
+               alt="Sheh伟伟" />
+          <p class="site-author-name" itemprop="name">Sheh伟伟</p>
+           
+              <p class="site-description motion-element" itemprop="description">做个有态度的程序员</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/DavidSheh" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1586558567/profile?topnav=1&wvr=6&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="764150976@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#第1章-重构，第一个案例"><span class="nav-number">1.</span> <span class="nav-text">第1章 重构，第一个案例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第2章-重构原则"><span class="nav-number">2.</span> <span class="nav-text">第2章 重构原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第3章-代码的坏味道"><span class="nav-number">3.</span> <span class="nav-text">第3章 代码的坏味道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第4章-构筑测试体系"><span class="nav-number">4.</span> <span class="nav-text">第4章 构筑测试体系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第5章-重构列表"><span class="nav-number">5.</span> <span class="nav-text">第5章 重构列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第6章-重新组织函数"><span class="nav-number">6.</span> <span class="nav-text">第6章 重新组织函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第7章-在对象之间搬移特性"><span class="nav-number">7.</span> <span class="nav-text">第7章 在对象之间搬移特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第8章-重新组织数据"><span class="nav-number">8.</span> <span class="nav-text">第8章 重新组织数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第9章-简化条件表达式"><span class="nav-number">9.</span> <span class="nav-text">第9章 简化条件表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第10章-简化函数调用"><span class="nav-number">10.</span> <span class="nav-text">第10章 简化函数调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第11章-处理概括关系"><span class="nav-number">11.</span> <span class="nav-text">第11章 处理概括关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第12章-大型重构"><span class="nav-number">12.</span> <span class="nav-text">第12章 大型重构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第13章-重构，复用与现实"><span class="nav-number">13.</span> <span class="nav-text">第13章 重构，复用与现实</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第14章-重构工具"><span class="nav-number">14.</span> <span class="nav-text">第14章 重构工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第15章-总结"><span class="nav-number">15.</span> <span class="nav-text">第15章 总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheh伟伟</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://davidsheh.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://davidsheh.github.io/2016/03/03/「重构：改善代码的既有设计」读书笔记/';
+          this.page.identifier = '2016/03/03/「重构：改善代码的既有设计」读书笔记/';
+          this.page.title = '「重构：改善代码的既有设计」读书笔记';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://davidsheh.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

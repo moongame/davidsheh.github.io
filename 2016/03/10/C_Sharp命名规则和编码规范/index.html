@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="pvbMvn4BVpZBxOb13ApVEecjLIYZxQNoDNPTP1sMAz0" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="C#," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sheh伟伟的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="1. 用Pascal规则来命名属性、方法、事件和类名123456public class HelloWorld&amp;#123;	public void SayHello(string name)	&amp;#123;	&amp;#125;&amp;#125;  Pascal规则是指名称中单词的首字母大写 ,如EmployeeSalary、 ConfimationDialog、PlainTextEncoding。  2. 用C">
+<meta name="keywords" content="C#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C#命名规则和编码规范">
+<meta property="og:url" content="http://davidsheh.github.io/2016/03/10/C_Sharp命名规则和编码规范/index.html">
+<meta property="og:site_name" content="Sheh伟伟的博客">
+<meta property="og:description" content="1. 用Pascal规则来命名属性、方法、事件和类名123456public class HelloWorld&amp;#123;	public void SayHello(string name)	&amp;#123;	&amp;#125;&amp;#125;  Pascal规则是指名称中单词的首字母大写 ,如EmployeeSalary、 ConfimationDialog、PlainTextEncoding。  2. 用C">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-01-20T08:18:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C#命名规则和编码规范">
+<meta name="twitter:description" content="1. 用Pascal规则来命名属性、方法、事件和类名123456public class HelloWorld&amp;#123;	public void SayHello(string name)	&amp;#123;	&amp;#125;&amp;#125;  Pascal规则是指名称中单词的首字母大写 ,如EmployeeSalary、 ConfimationDialog、PlainTextEncoding。  2. 用C">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://davidsheh.github.io/2016/03/10/C_Sharp命名规则和编码规范/"/>
+
+
+
+
+
+  <title>C#命名规则和编码规范 | Sheh伟伟的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104471088-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e2cb29ab0418c83c37bb4062cd58b1d4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sheh伟伟的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Attitude is a little thing that makes a big difference</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://davidsheh.github.io/2016/03/10/C_Sharp命名规则和编码规范/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheh伟伟">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/4453301?v=4&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheh伟伟的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C#命名规则和编码规范</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-10T15:03:15+08:00">
+                2016-03-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">技术笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/03/10/C_Sharp命名规则和编码规范/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/03/10/C_Sharp命名规则和编码规范/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-用Pascal规则来命名属性、方法、事件和类名"><a href="#1-用Pascal规则来命名属性、方法、事件和类名" class="headerlink" title="1. 用Pascal规则来命名属性、方法、事件和类名"></a>1. 用Pascal规则来命名属性、方法、事件和类名</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HelloWorld</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SayHello</span>(<span class="params"><span class="keyword">string</span> name</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Pascal规则是指名称中单词的首字母大写 ,如EmployeeSalary、 ConfimationDialog、PlainTextEncoding。</p>
+</blockquote>
+<h3 id="2-用Camel规则来命名成员变量、局部变量和方法的参数"><a href="#2-用Camel规则来命名成员变量、局部变量和方法的参数" class="headerlink" title="2. 用Camel规则来命名成员变量、局部变量和方法的参数"></a>2. 用Camel规则来命名成员变量、局部变量和方法的参数</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Product</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">string</span> productId;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">string</span> productName;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddProduct</span>(<span class="params"><span class="keyword">string</span> productId,<span class="keyword">string</span> productName</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Camel规则类似于Pascal规则 ,但名称中第一个单词的首字母不大写 ,如employeeSalary、 confimationDialog、plainTextEncoding。 </p>
+</blockquote>
+<h3 id="3-不要使用匈牙利命名法"><a href="#3-不要使用匈牙利命名法" class="headerlink" title="3. 不要使用匈牙利命名法"></a>3. 不要使用匈牙利命名法</h3><p>不要给成员变量加任何前缀（如<em>、m</em>、s_等等）。如果想要区分局部变量和成员变量，可以使用<code>this</code>关键字。</p>
+<h3 id="4-不要将常量或者只读变量的变量名全部大写，而使用Pascal规则来命名"><a href="#4-不要将常量或者只读变量的变量名全部大写，而使用Pascal规则来命名" class="headerlink" title="4. 不要将常量或者只读变量的变量名全部大写，而使用Pascal规则来命名"></a>4. 不要将常量或者只读变量的变量名全部大写，而使用Pascal规则来命名</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Correct</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">string</span> ShippingType = <span class="string">"DropShip"</span>;</span><br><span class="line">	</span><br><span class="line"><span class="comment">// Avoid</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">string</span> SHIPPINGTYPE = <span class="string">"DropShip"</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="5-接口的名称一般以大写I作前缀"><a href="#5-接口的名称一般以大写I作前缀" class="headerlink" title="5. 接口的名称一般以大写I作前缀"></a>5. 接口的名称一般以大写<code>I</code>作前缀</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IConvertible</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">byte</span> <span class="title">ToByte</span>(<span class="params"></span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-自定义的属性以Attribute结尾"><a href="#6-自定义的属性以Attribute结尾" class="headerlink" title="6. 自定义的属性以Attribute结尾"></a>6. 自定义的属性以<code>Attribute</code>结尾</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TableAttribute</span>:<span class="title">Attribute</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="7-自定义的异常以Exception结尾"><a href="#7-自定义的异常以Exception结尾" class="headerlink" title="7. 自定义的异常以Exception结尾"></a>7. 自定义的异常以Exception结尾</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">NullEmptyException</span>:<span class="title">Exception</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="8-类的命名。用名词或名词短语来命名类名"><a href="#8-类的命名。用名词或名词短语来命名类名" class="headerlink" title="8. 类的命名。用名词或名词短语来命名类名"></a>8. 类的命名。用名词或名词短语来命名类名</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Employee</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BusinessLocation</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DocumentCollection</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="9-方法的命名。一般将其命名为动宾短语"><a href="#9-方法的命名。一般将其命名为动宾短语" class="headerlink" title="9. 方法的命名。一般将其命名为动宾短语"></a>9. 方法的命名。一般将其命名为动宾短语</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">File</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">CreateFile</span>(<span class="params"><span class="keyword">string</span> filePath</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetPath</span>(<span class="params"><span class="keyword">string</span> path</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="10-局部变量的名称要有意义"><a href="#10-局部变量的名称要有意义" class="headerlink" title="10. 局部变量的名称要有意义"></a>10. 局部变量的名称要有意义</h3><p>不要直接用用<code>i</code>,<code>j</code>,<code>k</code>,<code>l</code>,<code>m</code>,<code>n</code>,<code>x</code>,<code>y</code>,<code>z</code>等做变量名，但for循环除外</p>
+<h3 id="11-代码分块"><a href="#11-代码分块" class="headerlink" title="11. 代码分块"></a>11. 代码分块</h3><p>所有的成员变量声明在类的顶端，用一个换行把它和方法分开。同时可以使用成对的<code>#region...#endregion</code>标记，方便折叠。</p>
+<h3 id="12-布尔型变量或者方法一般可以用is、can、has或者should做前缀。如，isFinished-canWork等。"><a href="#12-布尔型变量或者方法一般可以用is、can、has或者should做前缀。如，isFinished-canWork等。" class="headerlink" title="12. 布尔型变量或者方法一般可以用is、can、has或者should做前缀。如，isFinished, canWork等。"></a>12. 布尔型变量或者方法一般可以用<code>is</code>、<code>can</code>、<code>has</code>或者<code>should</code>做前缀。如，isFinished, canWork等。</h3><h3 id="13-一般-C-的编码风格要求花括号-另起一行，不要直接跟在类名和方法后面。"><a href="#13-一般-C-的编码风格要求花括号-另起一行，不要直接跟在类名和方法后面。" class="headerlink" title="13.  一般 C# 的编码风格要求花括号{另起一行，不要直接跟在类名和方法后面。"></a>13.  一般 C# 的编码风格要求花括号<code>{</code>另起一行，不要直接跟在类名和方法后面。</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Sample</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// <span class="doctag">TODO:</span> 在此处添加构造函数逻辑</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="14-可以用缩写作为UI元素的前缀"><a href="#14-可以用缩写作为UI元素的前缀" class="headerlink" title="14. 可以用缩写作为UI元素的前缀"></a>14. 可以用缩写作为UI元素的前缀</h3><p>常见UI组件的一般缩写形式：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Label --&gt; lbl、Text --&gt; txt、Button --&gt; btn</span><br><span class="line">Image --&gt; img、 Widget --&gt; Wgt、 List --&gt; lst、CheckBox --&gt; chk</span><br><span class="line">Hyperlink --&gt; lnk、Panel --&gt; pnl、Table --&gt; tab</span><br><span class="line">ImageButton --&gt; imb</span><br></pre></td></tr></table></figure></p>
+<h3 id="15-判断条件是一个布尔变量时不要使用-进行条件判断"><a href="#15-判断条件是一个布尔变量时不要使用-进行条件判断" class="headerlink" title="15. 判断条件是一个布尔变量时不要使用==进行条件判断"></a>15. 判断条件是一个布尔变量时不要使用<code>==</code>进行条件判断</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不友好的写法</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">bool</span> isFinished = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">if</span>(isFinished == <span class="literal">true</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确的写法</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">bool</span> isFinished = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">if</span>(isFinished)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line">```	</span><br><span class="line"></span><br><span class="line"><span class="meta">### 16. 慎用缩写</span></span><br><span class="line">变量名是一个单词的尽量不要缩写，多单词组成的变量名可适当缩写。</span><br><span class="line"></span><br><span class="line"><span class="meta">### 17. 在类的顶部声明所有的成员变量，静态变量声明在最前面</span></span><br><span class="line">```csharp</span><br><span class="line"><span class="comment">// Correct</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Account</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">string</span> BankName;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">decimal</span> Reserves;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">string</span> Number &#123;<span class="keyword">get</span>; <span class="keyword">set</span>;&#125;</span><br><span class="line">	<span class="keyword">public</span> DateTime DateOpened &#123;<span class="keyword">get</span>; <span class="keyword">set</span>;&#125;</span><br><span class="line">	<span class="keyword">public</span> DateTime DateClosed &#123;<span class="keyword">get</span>; <span class="keyword">set</span>;&#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">decimal</span> Balance &#123;<span class="keyword">get</span>; <span class="keyword">set</span>;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// Constructor</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Account</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// ...</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="18-方法的书写规范"><a href="#18-方法的书写规范" class="headerlink" title="18. 方法的书写规范"></a>18. 方法的书写规范</h3><p>如果一个方法超过25行，就需要考虑是否可以重构和拆分成多个方法。方法命名要见名知意，好的方法名可以省略多余的注释。方法功能尽量单一。</p>
+<h3 id="19-其他"><a href="#19-其他" class="headerlink" title="19. 其他"></a>19. 其他</h3><p>补充两条：</p>
+<ol>
+<li>方法名中尽量少用get，表示区数据的函数直接描述行为，如MsgFromFile()</li>
+<li>尽量少用set，应用属性替代</li>
+</ol>
+<h3 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h3><ol>
+<li><a href="http://www.dofactory.com/reference/csharp-coding-standards" target="_blank" rel="noopener">C# Coding Standards and Naming Conventions</a></li>
+<li><a href="https://blogs.msdn.microsoft.com/brada/2005/01/26/internal-coding-guidelines/" target="_blank" rel="noopener">Internal Coding Guidelines</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Sheh伟伟 WeChat Pay"/>
+        <p>微信打赏</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Sheh伟伟 Alipay"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Sheh伟伟
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://davidsheh.github.io/2016/03/10/C_Sharp命名规则和编码规范/" title="C#命名规则和编码规范">http://davidsheh.github.io/2016/03/10/C_Sharp命名规则和编码规范/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C#</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/10/Android Studio连接真机没反应/" rel="next" title="Android Studio连接真机没反应">
+                <i class="fa fa-chevron-left"></i> Android Studio连接真机没反应
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/24/「Unity游戏开发」向量在游戏开发中的应用（二）/" rel="prev" title="「Unity游戏开发」向量在游戏开发中的应用（二）">
+                「Unity游戏开发」向量在游戏开发中的应用（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "1",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      },
+      "slide": {
+        "bdImg": "5",
+        "bdPos": "left",
+        "bdTop": "100"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          <!-- ad start -->
+          
+
+          <!-- ad end -->
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/4453301?v=4&s=460"
+               alt="Sheh伟伟" />
+          <p class="site-author-name" itemprop="name">Sheh伟伟</p>
+           
+              <p class="site-description motion-element" itemprop="description">做个有态度的程序员</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/DavidSheh" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1586558567/profile?topnav=1&wvr=6&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="764150976@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-用Pascal规则来命名属性、方法、事件和类名"><span class="nav-number">1.</span> <span class="nav-text">1. 用Pascal规则来命名属性、方法、事件和类名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-用Camel规则来命名成员变量、局部变量和方法的参数"><span class="nav-number">2.</span> <span class="nav-text">2. 用Camel规则来命名成员变量、局部变量和方法的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-不要使用匈牙利命名法"><span class="nav-number">3.</span> <span class="nav-text">3. 不要使用匈牙利命名法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-不要将常量或者只读变量的变量名全部大写，而使用Pascal规则来命名"><span class="nav-number">4.</span> <span class="nav-text">4. 不要将常量或者只读变量的变量名全部大写，而使用Pascal规则来命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-接口的名称一般以大写I作前缀"><span class="nav-number">5.</span> <span class="nav-text">5. 接口的名称一般以大写I作前缀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-自定义的属性以Attribute结尾"><span class="nav-number">6.</span> <span class="nav-text">6. 自定义的属性以Attribute结尾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-自定义的异常以Exception结尾"><span class="nav-number">7.</span> <span class="nav-text">7. 自定义的异常以Exception结尾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-类的命名。用名词或名词短语来命名类名"><span class="nav-number">8.</span> <span class="nav-text">8. 类的命名。用名词或名词短语来命名类名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-方法的命名。一般将其命名为动宾短语"><span class="nav-number">9.</span> <span class="nav-text">9. 方法的命名。一般将其命名为动宾短语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-局部变量的名称要有意义"><span class="nav-number">10.</span> <span class="nav-text">10. 局部变量的名称要有意义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-代码分块"><span class="nav-number">11.</span> <span class="nav-text">11. 代码分块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-布尔型变量或者方法一般可以用is、can、has或者should做前缀。如，isFinished-canWork等。"><span class="nav-number">12.</span> <span class="nav-text">12. 布尔型变量或者方法一般可以用is、can、has或者should做前缀。如，isFinished, canWork等。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-一般-C-的编码风格要求花括号-另起一行，不要直接跟在类名和方法后面。"><span class="nav-number">13.</span> <span class="nav-text">13.  一般 C# 的编码风格要求花括号{另起一行，不要直接跟在类名和方法后面。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-可以用缩写作为UI元素的前缀"><span class="nav-number">14.</span> <span class="nav-text">14. 可以用缩写作为UI元素的前缀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-判断条件是一个布尔变量时不要使用-进行条件判断"><span class="nav-number">15.</span> <span class="nav-text">15. 判断条件是一个布尔变量时不要使用==进行条件判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-方法的书写规范"><span class="nav-number">16.</span> <span class="nav-text">18. 方法的书写规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-其他"><span class="nav-number">17.</span> <span class="nav-text">19. 其他</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文章："><span class="nav-number">18.</span> <span class="nav-text">参考文章：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheh伟伟</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://davidsheh.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://davidsheh.github.io/2016/03/10/C_Sharp命名规则和编码规范/';
+          this.page.identifier = '2016/03/10/C_Sharp命名规则和编码规范/';
+          this.page.title = 'C#命名规则和编码规范';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://davidsheh.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
