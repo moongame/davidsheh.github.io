@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="pvbMvn4BVpZBxOb13ApVEecjLIYZxQNoDNPTP1sMAz0" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Unity3D," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sheh伟伟的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="自从来到现在的公司，负责Unity组开发以来，尝试了各种版本控制工具。从一开始的TortoiseSVN，到后来为了追求逼格使用Git，尝试了Github客户端和SourceTree，发现都有各种不爽。最后，发现还是Unity的亲儿子Asset Asset Server最好使，服务器配置傻瓜化，还集成到了Unity编辑器。 一、Asset Server安装  去Unity官网下载Unity资源服务器">
+<meta name="keywords" content="Unity3D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最好用的Unity版本控制工具">
+<meta property="og:url" content="http://davidsheh.github.io/2016/11/03/最好用的Unity版本控制工具/index.html">
+<meta property="og:site_name" content="Sheh伟伟的博客">
+<meta property="og:description" content="自从来到现在的公司，负责Unity组开发以来，尝试了各种版本控制工具。从一开始的TortoiseSVN，到后来为了追求逼格使用Git，尝试了Github客户端和SourceTree，发现都有各种不爽。最后，发现还是Unity的亲儿子Asset Asset Server最好使，服务器配置傻瓜化，还集成到了Unity编辑器。 一、Asset Server安装  去Unity官网下载Unity资源服务器">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_1.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_2.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_3.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_4.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_5.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_6.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_7.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_8.jpg">
+<meta property="og:updated_time" content="2019-01-29T11:10:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="最好用的Unity版本控制工具">
+<meta name="twitter:description" content="自从来到现在的公司，负责Unity组开发以来，尝试了各种版本控制工具。从一开始的TortoiseSVN，到后来为了追求逼格使用Git，尝试了Github客户端和SourceTree，发现都有各种不爽。最后，发现还是Unity的亲儿子Asset Asset Server最好使，服务器配置傻瓜化，还集成到了Unity编辑器。 一、Asset Server安装  去Unity官网下载Unity资源服务器">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://davidsheh.github.io/2016/11/03/最好用的Unity版本控制工具/"/>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2770091501285321",
+    enable_page_level_ads: true
+  });
+</script>
+
+  <title>最好用的Unity版本控制工具 | Sheh伟伟的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104471088-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e2cb29ab0418c83c37bb4062cd58b1d4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sheh伟伟的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Attitude is a little thing that makes a big difference</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://davidsheh.github.io/2016/11/03/最好用的Unity版本控制工具/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheh伟伟">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/4453301?v=4&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheh伟伟的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">最好用的Unity版本控制工具</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-03T21:14:33+08:00">
+                2016-11-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/开发工具/" itemprop="url" rel="index">
+                    <span itemprop="name">开发工具</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>自从来到现在的公司，负责Unity组开发以来，尝试了各种版本控制工具。从一开始的TortoiseSVN，到后来为了追求逼格使用Git，尝试了Github客户端和SourceTree，发现都有各种不爽。最后，发现还是Unity的亲儿子Asset Asset Server最好使，服务器配置傻瓜化，还集成到了Unity编辑器。</p>
+<p><strong>一、Asset Server安装</strong></p>
+<hr>
+<p>去<a href="https://unity3d.com/cn/unity/team-license" target="_blank" rel="noopener">Unity官网</a>下载Unity资源服务器，如下图：</p>
+<p><img src="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_1.jpg" alt=""><br>Windows版下载后安装很简单，安装过程中会弹出的账号密码对话框，如下图：</p>
+<p><img src="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_2.jpg" alt=""><br>填写完账号密码后，会弹出控制面板，如下图：</p>
+<p><img src="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_3.jpg" alt=""><br>Asset Server启动起来了就可以关掉，程序会在后台继续运行。</p>
+<p><strong>二、Asset Server配置</strong></p>
+<hr>
+<p>用Unity在服务器电脑上新建一个空的项目，然后选择Edit -&gt; Project Settings -&gt; Editor打开Editor Settings，Version Control项选择Asset Server，如下图：<br><img src="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_4.jpg" alt=""></p>
+<p>接着选择Window -&gt; Version Control打开Version Control，如下图：<br><img src="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_5.jpg" alt=""></p>
+<p>点击Administration按钮，然后在ServerAddress中输入localhost，接着输入用户名和密码，点击Connect。如下图：<br><img src="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_6.jpg" alt=""></p>
+<p>点击界面右边的Create按钮创建一个项目，然后就在Server视图的左下角会显示创建的项目。选中该项目，然后点击New User按钮创建允许访问的成员的信息，成员创建好了后，还必须勾选，没有勾选的不能访问该项目。如下图：<br><img src="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_7.jpg" alt=""></p>
+<p>到此，服务器配置就完成了。只要知道服务器的IP地址和Asset Server的用户名密码就可以在其他电脑上管理资源服务器。</p>
+<p><strong>三、连接Asset Server</strong></p>
+<hr>
+<p>服务器配置完了，那么项目的其他成员如何连接服务器进行代码同步呢？<br>项目的其他成员可以在自己电脑上先建一个空项目，然后将Version Control也设置成Asset Server，接着选择Window -&gt; Version Control打开Server面板。点击Connection按钮，然后输入Server的IP地址和为改成员创建的用户名密码，点击Show Projects或者输入Project Name后，接着点击Connect，这样就连接上了服务器。如下图：<br><img src="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/unity_assetserver_8.jpg" alt=""></p>
+<p>时间紧迫，就写这么多吧，以后有必要再接着写代码的同步流程以及代码的对比工具。</p>
+<p><strong>四、参考资料</strong></p>
+<hr>
+<ol>
+<li><a href="https://docs.unity3d.com/Manual/SettinguptheAssetServer.html" target="_blank" rel="noopener">Setting up the Asset Server</a></li>
+<li><a href="https://docs.unity3d.com/Manual/AssetServer.html" target="_blank" rel="noopener">Asset Server (Team License)</a></li>
+</ol>
+<blockquote>
+<p>如果本文有错误之处还请帮忙指出。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Sheh伟伟 WeChat Pay"/>
+        <p>微信打赏</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Sheh伟伟 Alipay"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Sheh伟伟
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://davidsheh.github.io/2016/11/03/最好用的Unity版本控制工具/" title="最好用的Unity版本控制工具">http://davidsheh.github.io/2016/11/03/最好用的Unity版本控制工具/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unity3D/" rel="tag"># Unity3D</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/19/如何用Github版本控制非Github库/" rel="next" title="如何用Github版本控制非Github库">
+                <i class="fa fa-chevron-left"></i> 如何用Github版本控制非Github库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/15/Unity插件之Unity调用C_Sharp编译的DLL/" rel="prev" title="Unity插件之Unity调用C#编译的DLL">
+                Unity插件之Unity调用C#编译的DLL <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "1",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      },
+      "slide": {
+        "bdImg": "5",
+        "bdPos": "left",
+        "bdTop": "100"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          <!-- ad start -->
+          
+
+          <!-- ad end -->
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="gitalk_container"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/4453301?v=4&s=460"
+               alt="Sheh伟伟" />
+          <p class="site-author-name" itemprop="name">Sheh伟伟</p>
+           
+              <p class="site-description motion-element" itemprop="description">做个有态度的程序员</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/DavidSheh" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1586558567/profile?topnav=1&wvr=6&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="764150976@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheh伟伟</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+	
+
+
+	
+		
+		
+		
+		<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+		<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+    <script type="text/javascript">
+    var gitalk = new Gitalk({
+			clientID: 'a64275d932b30b7c6654',
+			clientSecret: '58cfd039fc57204bdaf145cb0973c7d72ba817a4',
+			repo: 'davidsheh.github.io',
+			owner: 'davidsheh',
+			admin: 'davidsheh',
+			id: window.location.pathname,
+    });
+    gitalk.render('gitalk_container');
+		</script>
+	
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

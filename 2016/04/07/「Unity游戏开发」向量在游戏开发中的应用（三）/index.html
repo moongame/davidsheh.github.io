@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="pvbMvn4BVpZBxOb13ApVEecjLIYZxQNoDNPTP1sMAz0" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Unity3D,游戏开发,向量," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sheh伟伟的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="在上一篇博客中讲了利用向量点乘在游戏开发中应用的几种情景。本篇博客将用一个简单的小例子来讲解在实际的游戏开发中如何利用向量的叉乘来解决问题。 向量叉乘的几何意义 叉积的长度 |a×b| 可以解释成以a和b为邻边的平行四边形的面积。 混合积 [a b c] = (a×b)·c可以得到以a，b，c为棱的平行六面体的体积。   关于向量叉乘的其他定义、规律以及应用有兴趣的朋友可以参考百度百科，这里就不再">
+<meta name="keywords" content="Unity3D,游戏开发,向量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「Unity游戏开发」向量在游戏开发中的应用（三）">
+<meta property="og:url" content="http://davidsheh.github.io/2016/04/07/「Unity游戏开发」向量在游戏开发中的应用（三）/index.html">
+<meta property="og:site_name" content="Sheh伟伟的博客">
+<meta property="og:description" content="在上一篇博客中讲了利用向量点乘在游戏开发中应用的几种情景。本篇博客将用一个简单的小例子来讲解在实际的游戏开发中如何利用向量的叉乘来解决问题。 向量叉乘的几何意义 叉积的长度 |a×b| 可以解释成以a和b为邻边的平行四边形的面积。 混合积 [a b c] = (a×b)·c可以得到以a，b，c为棱的平行六面体的体积。   关于向量叉乘的其他定义、规律以及应用有兴趣的朋友可以参考百度百科，这里就不再">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/vector_cross.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/wheel_rotate.gif">
+<meta property="og:updated_time" content="2019-01-29T11:10:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「Unity游戏开发」向量在游戏开发中的应用（三）">
+<meta name="twitter:description" content="在上一篇博客中讲了利用向量点乘在游戏开发中应用的几种情景。本篇博客将用一个简单的小例子来讲解在实际的游戏开发中如何利用向量的叉乘来解决问题。 向量叉乘的几何意义 叉积的长度 |a×b| 可以解释成以a和b为邻边的平行四边形的面积。 混合积 [a b c] = (a×b)·c可以得到以a，b，c为棱的平行六面体的体积。   关于向量叉乘的其他定义、规律以及应用有兴趣的朋友可以参考百度百科，这里就不再">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/vector_cross.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://davidsheh.github.io/2016/04/07/「Unity游戏开发」向量在游戏开发中的应用（三）/"/>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2770091501285321",
+    enable_page_level_ads: true
+  });
+</script>
+
+  <title>「Unity游戏开发」向量在游戏开发中的应用（三） | Sheh伟伟的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104471088-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e2cb29ab0418c83c37bb4062cd58b1d4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sheh伟伟的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Attitude is a little thing that makes a big difference</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://davidsheh.github.io/2016/04/07/「Unity游戏开发」向量在游戏开发中的应用（三）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheh伟伟">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/4453301?v=4&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheh伟伟的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">「Unity游戏开发」向量在游戏开发中的应用（三）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-07T18:33:14+08:00">
+                2016-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">技术笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在<a href="http://davidsheh.github.io/2016/03/24/「Unity游戏开发」向量在游戏开发中的应用（二）/">上一篇博客</a>中讲了利用向量点乘在游戏开发中应用的几种情景。本篇博客将用一个简单的小例子来讲解在实际的游戏开发中如何利用向量的叉乘来解决问题。</p>
+<h4 id="向量叉乘的几何意义"><a href="#向量叉乘的几何意义" class="headerlink" title="向量叉乘的几何意义"></a>向量叉乘的几何意义</h4><ol>
+<li>叉积的长度 |a×b| 可以解释成以a和b为邻边的平行四边形的面积。</li>
+<li>混合积 [a b c] = (a×b)·c可以得到以a，b，c为棱的平行六面体的体积。</li>
+</ol>
+<blockquote>
+<p>关于向量叉乘的其他定义、规律以及应用有兴趣的朋友可以参考<a href="http://baike.baidu.com/link?url=UkiWhRdXPAFCrVRaQ29miie6aZcn9WLwpRYSsIHTAZhAL07fTdaymIr1XXQB5nxDaGB8ks_fkHR6sZQcKzaWGa" target="_blank" rel="noopener">百度百科</a>，这里就不再啰嗦了。本篇博客不想在叉乘其他地方纠结太多，只说一下如何用叉乘判断方向。</p>
+</blockquote>
+<h4 id="如何用向量叉乘判断方向"><a href="#如何用向量叉乘判断方向" class="headerlink" title="如何用向量叉乘判断方向"></a>如何用向量叉乘判断方向</h4><p>在网上有很多人将向量的应用总结为一句话：点乘判断角度，叉乘判断方向。关于点乘在<a href="http://blog.csdn.net/wenxin2011/article/details/50972976" target="_blank" rel="noopener">上一篇文章</a>中已经说完了，所以这里就说说如何用向量叉乘判断方向。<br>我们都知道在一个平面内的两个非平行向量叉乘的结果是这个平面的法向量，这个法向量是有方向的，而这个方向可以用“右手定则”来判断。具体的判断方法是：<br>若坐标系是满足右手定则的，当右手的四指从向量<strong>a</strong>以不超过180度的转角转向向量<strong>b</strong>时，竖起的大拇指指向是向量<strong>n</strong>的方向。如下图：<br><img src="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/vector_cross.png" alt="向量叉乘"></p>
+<blockquote>
+<p>在右手坐标系中，当向量<strong>a</strong>和<strong>b</strong>作叉乘运算时， 利用“右手定则”可以知道：当法向量<strong>n</strong>跟某一坐标轴同向时，四指方向为逆时针方向；当法向量<strong>n</strong>跟该坐标轴反向时，四指方向为顺时针方向。同时“右手定则”要求转角不超过180度的方向，所以用叉乘判断的转向一定是最优转向（所要转动的角度最小，转动的代价也就最小）。在游戏中可利用这点来判断一个角色是顺时针还是逆时针才能更快速的转向一个敌人。</p>
+<p><strong>注意：Unity3D是左手坐标系，所以四指方向跟右手坐标系正好相反。</strong></p>
+</blockquote>
+<h4 id="向量叉乘案例"><a href="#向量叉乘案例" class="headerlink" title="向量叉乘案例"></a>向量叉乘案例</h4><p>接下来的案例将展示如何用向量叉乘判断一个方向盘的转向。老规矩，先上个案例的效果图：<br><img src="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/wheel_rotate.gif" alt="案例效果图"></p>
+<p>案例源码：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> UnityEngine;</div><div class="line"><span class="keyword">using</span> System.Collections;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">VectorCrossDemo</span> : <span class="title">MonoBehaviour</span> </div><div class="line">&#123;</div><div class="line">    <span class="keyword">private</span> GameObject wheelObj;</div><div class="line">    <span class="keyword">private</span> Vector3 wheelPos = Vector3.zero; </div><div class="line">    <span class="keyword">private</span> Vector3 oldVec = Vector3.zero;</div><div class="line">    <span class="keyword">private</span> Vector3 currVec = Vector3.zero;</div><div class="line"></div><div class="line">	<span class="comment">// Use this for initialization</span></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>) </span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        wheelObj = GameObject.Find(<span class="string">"Wheel"</span>);</div><div class="line">        <span class="keyword">if</span>(<span class="literal">null</span> != wheelObj)</div><div class="line">        &#123;</div><div class="line">            wheelPos = wheelObj.transform.position;</div><div class="line">        &#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">// Update is called once per frame</span></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">if</span> (Input.GetMouseButton(<span class="number">0</span>))</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">var</span> ray = Camera.main.ScreenPointToRay(Input.mousePosition);</div><div class="line">            RaycastHit hit;</div><div class="line">            <span class="keyword">if</span> (Physics.Raycast(ray, <span class="keyword">out</span> hit)) </div><div class="line">            &#123;</div><div class="line">                <span class="keyword">if</span>(hit.transform.name.Equals(<span class="string">"Wheel"</span>))</div><div class="line">                &#123;</div><div class="line">                    RotateWheel(hit.point);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">RotateWheel</span> (<span class="params">Vector3 pos</span>)</span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        currVec = pos - wheelPos;<span class="comment">//计算方向盘中心点到触控点的向量			</span></div><div class="line"></div><div class="line">        Vector3 normalVec = Vector3.Cross(currVec, oldVec);<span class="comment">//计算法向量</span></div><div class="line">        <span class="keyword">float</span> vecAngle = Vector2.Angle(currVec, oldVec);<span class="comment">//计算两个向量的夹角		</span></div><div class="line"></div><div class="line">        <span class="comment">// 使用“右手定则”可知，当大拇指方向指向我们，四指方向为逆时针方向；</span></div><div class="line">        <span class="comment">// 当大拇指远离我们，四指方向为顺时针方向。</span></div><div class="line">        <span class="comment">// 这里叉乘后的法向量平行于z轴,所以用法向量的z分量的正负判断法向量方向</span></div><div class="line">        <span class="keyword">if</span> (normalVec.z &gt; <span class="number">0</span>)<span class="comment">// 和z轴同向，则顺时针转</span></div><div class="line">        &#123;</div><div class="line">            wheelObj.transform.Rotate(Vector3.forward, -vecAngle);<span class="comment">// 顺时针转</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (normalVec.z &lt; <span class="number">0</span>)<span class="comment">//和z轴反向，则逆时针转</span></div><div class="line">        &#123;</div><div class="line">            wheelObj.transform.Rotate(Vector3.forward, vecAngle);<span class="comment">// 逆时针转</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        oldVec = currVec;<span class="comment">//赋值</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>本Demo使用的的开发工具是Unity5.0.1f1和VS2013，建议下载源码后用Unity5.0.1f1或者更高的版本打开。<a href="http://download.csdn.net/detail/wenxin2011/9485516" target="_blank" rel="noopener">源码下载</a></p>
+</blockquote>
+<hr>
+<p><strong>同系列文章</strong></p>
+<p><a href="http://davidsheh.github.io/2016/03/05/「Unity游戏开发」向量在游戏开发中的应用（一）/">「Unity游戏开发」向量在游戏开发中的应用（一）</a></p>
+<p><a href="http://davidsheh.github.io/2016/03/24/「Unity游戏开发」向量在游戏开发中的应用（二）/">「Unity游戏开发」向量在游戏开发中的应用（二）</a></p>
+<p><a href="http://davidsheh.github.io/2016/04/07/「Unity游戏开发」向量在游戏开发中的应用（三）/">「Unity游戏开发」向量在游戏开发中的应用（三）</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Sheh伟伟 WeChat Pay"/>
+        <p>微信打赏</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Sheh伟伟 Alipay"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Sheh伟伟
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://davidsheh.github.io/2016/04/07/「Unity游戏开发」向量在游戏开发中的应用（三）/" title="「Unity游戏开发」向量在游戏开发中的应用（三）">http://davidsheh.github.io/2016/04/07/「Unity游戏开发」向量在游戏开发中的应用（三）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unity3D/" rel="tag"># Unity3D</a>
+          
+            <a href="/tags/游戏开发/" rel="tag"># 游戏开发</a>
+          
+            <a href="/tags/向量/" rel="tag"># 向量</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/24/「Unity游戏开发」向量在游戏开发中的应用（二）/" rel="next" title="「Unity游戏开发」向量在游戏开发中的应用（二）">
+                <i class="fa fa-chevron-left"></i> 「Unity游戏开发」向量在游戏开发中的应用（二）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/01/「Modern OpenGL系列（一）」十步搞定OpenGL开发环境/" rel="prev" title="「Modern OpenGL系列（一）」十步搞定OpenGL开发环境">
+                「Modern OpenGL系列（一）」十步搞定OpenGL开发环境 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "1",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      },
+      "slide": {
+        "bdImg": "5",
+        "bdPos": "left",
+        "bdTop": "100"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          <!-- ad start -->
+          
+
+          <!-- ad end -->
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="gitalk_container"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/4453301?v=4&s=460"
+               alt="Sheh伟伟" />
+          <p class="site-author-name" itemprop="name">Sheh伟伟</p>
+           
+              <p class="site-description motion-element" itemprop="description">做个有态度的程序员</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/DavidSheh" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1586558567/profile?topnav=1&wvr=6&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="764150976@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#向量叉乘的几何意义"><span class="nav-number">1.</span> <span class="nav-text">向量叉乘的几何意义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何用向量叉乘判断方向"><span class="nav-number">2.</span> <span class="nav-text">如何用向量叉乘判断方向</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#向量叉乘案例"><span class="nav-number">3.</span> <span class="nav-text">向量叉乘案例</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheh伟伟</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+	
+
+
+	
+		
+		
+		
+		<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+		<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+    <script type="text/javascript">
+    var gitalk = new Gitalk({
+			clientID: 'a64275d932b30b7c6654',
+			clientSecret: '58cfd039fc57204bdaf145cb0973c7d72ba817a4',
+			repo: 'davidsheh.github.io',
+			owner: 'davidsheh',
+			admin: 'davidsheh',
+			id: window.location.pathname,
+    });
+    gitalk.render('gitalk_container');
+		</script>
+	
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

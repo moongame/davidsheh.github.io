@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="pvbMvn4BVpZBxOb13ApVEecjLIYZxQNoDNPTP1sMAz0" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="OpenGL," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sheh伟伟的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="在上一篇文章中已经介绍了OpenGL窗口的创建。本文接着说如何用OpenGL绘制一个三角形。1 . 添加头文件shader.h，代码如下：123456789101112131415161718192021#pragma once#include &amp;lt;string&amp;gt;#include &amp;lt;GL\glew.h&amp;gt;class Shader&amp;#123;public:	Shader(con">
+<meta name="keywords" content="OpenGL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「Modern OpenGL系列（四）」在OpenGL中使用Shader">
+<meta property="og:url" content="http://davidsheh.github.io/2016/05/08/「Modern OpenGL系列（四）」在OpenGL中使用Shader/index.html">
+<meta property="og:site_name" content="Sheh伟伟的博客">
+<meta property="og:description" content="在上一篇文章中已经介绍了OpenGL窗口的创建。本文接着说如何用OpenGL绘制一个三角形。1 . 添加头文件shader.h，代码如下：123456789101112131415161718192021#pragma once#include &amp;lt;string&amp;gt;#include &amp;lt;GL\glew.h&amp;gt;class Shader&amp;#123;public:	Shader(con">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://img.blog.csdn.net/20160508204145889">
+<meta property="og:image" content="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/morden_opengl_8.png">
+<meta property="og:updated_time" content="2019-01-29T11:10:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「Modern OpenGL系列（四）」在OpenGL中使用Shader">
+<meta name="twitter:description" content="在上一篇文章中已经介绍了OpenGL窗口的创建。本文接着说如何用OpenGL绘制一个三角形。1 . 添加头文件shader.h，代码如下：123456789101112131415161718192021#pragma once#include &amp;lt;string&amp;gt;#include &amp;lt;GL\glew.h&amp;gt;class Shader&amp;#123;public:	Shader(con">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20160508204145889">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://davidsheh.github.io/2016/05/08/「Modern OpenGL系列（四）」在OpenGL中使用Shader/"/>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2770091501285321",
+    enable_page_level_ads: true
+  });
+</script>
+
+  <title>「Modern OpenGL系列（四）」在OpenGL中使用Shader | Sheh伟伟的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104471088-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e2cb29ab0418c83c37bb4062cd58b1d4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sheh伟伟的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Attitude is a little thing that makes a big difference</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://davidsheh.github.io/2016/05/08/「Modern OpenGL系列（四）」在OpenGL中使用Shader/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheh伟伟">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/4453301?v=4&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheh伟伟的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">「Modern OpenGL系列（四）」在OpenGL中使用Shader</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-08T20:19:28+08:00">
+                2016-05-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">技术笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p> 在<a href="http://davidsheh.github.io/2016/05/08/「Modern OpenGL系列（三）」用OpenGL绘制一个三角形/">上一篇文章</a>中已经介绍了OpenGL窗口的创建。本文接着说如何用OpenGL绘制一个三角形。<br>1 . 添加头文件<code>shader.h</code>，代码如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;GL\glew.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shader</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">	Shader(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; fileName);</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Bind</span><span class="params">()</span></span>;</div><div class="line">	</div><div class="line">	<span class="keyword">virtual</span> ~Shader();</div><div class="line"><span class="keyword">protected</span>:</div><div class="line"><span class="keyword">private</span>:</div><div class="line">	<span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> NUM_SHADERS = <span class="number">2</span>;</div><div class="line">	Shader(<span class="keyword">const</span> Shader&amp; other)&#123;&#125;</div><div class="line">	<span class="keyword">void</span> <span class="keyword">operator</span>=(<span class="keyword">const</span> Shader&amp; other)&#123;&#125;</div><div class="line"></div><div class="line">	GLuint m_program;</div><div class="line">	GLuint m_shaders[NUM_SHADERS];</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>2 . 添加类<code>shader.cpp</code>，代码如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"shader.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CheckShaderError</span><span class="params">(GLuint shader, GLuint flag, <span class="keyword">bool</span> isProgram, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; errorMessage)</span></span>;</div><div class="line"><span class="keyword">static</span> <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">LoadShader</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; fileName)</span></span>;</div><div class="line"><span class="function"><span class="keyword">static</span> GLuint <span class="title">CreateShader</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; text, GLenum shaderType)</span></span>;</div><div class="line"></div><div class="line">Shader::Shader(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; fileName)</div><div class="line">&#123;</div><div class="line">	m_program = glCreateProgram();</div><div class="line">	m_shaders[<span class="number">0</span>] = CreateShader(LoadShader(fileName + <span class="string">".vs"</span>), GL_VERTEX_SHADER);</div><div class="line">	m_shaders[<span class="number">1</span>] = CreateShader(LoadShader(fileName + <span class="string">".fs"</span>), GL_FRAGMENT_SHADER);</div><div class="line"></div><div class="line">	<span class="keyword">for</span> (<span class="keyword">unsigned</span> <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; NUM_SHADERS; i++)</div><div class="line">	&#123;</div><div class="line">		glAttachShader(m_program, m_shaders[i]);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">//glBindAttribLocation(m_program, 0, "position");</span></div><div class="line"></div><div class="line">	glLinkProgram(m_program);</div><div class="line">	CheckShaderError(m_program, GL_LINK_STATUS, <span class="literal">true</span>, <span class="string">"Error: Program linking failed!"</span>);</div><div class="line"></div><div class="line">	glValidateProgram(m_program);</div><div class="line">	CheckShaderError(m_program, GL_VALIDATE_STATUS, <span class="literal">true</span>, <span class="string">"Error: Program invalid!"</span>);</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">Shader::~Shader()</div><div class="line">&#123;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">unsigned</span> <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; NUM_SHADERS; i++)</div><div class="line">	&#123;</div><div class="line">		glDetachShader(m_program, m_shaders[i]);</div><div class="line">		glDeleteShader(m_shaders[i]);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	glDeleteProgram(m_program);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> Shader::Bind()</div><div class="line">&#123;</div><div class="line">	glUseProgram(m_program);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> GLuint <span class="title">CreateShader</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; text, GLenum shaderType)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">	GLuint shader = glCreateShader(shaderType);</div><div class="line"></div><div class="line">	<span class="keyword">if</span> (shader == <span class="number">0</span>)</div><div class="line">		<span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"Error: Shader creation failed!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line"></div><div class="line">	<span class="keyword">const</span> GLchar* shaderSourceStrings[<span class="number">1</span>];</div><div class="line">	GLint shaderSourceStringLengths[<span class="number">1</span>];</div><div class="line"></div><div class="line">	shaderSourceStrings[<span class="number">0</span>] = text.c_str();</div><div class="line"></div><div class="line">	glShaderSource(shader, <span class="number">1</span>, shaderSourceStrings, shaderSourceStringLengths);</div><div class="line">	glCompileShader(shader);</div><div class="line"></div><div class="line">	CheckShaderError(shader, GL_COMPILE_STATUS, <span class="literal">false</span>, <span class="string">"Error: Shader compilation failed!"</span>);</div><div class="line"></div><div class="line">	<span class="keyword">return</span> shader;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">static</span> <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">LoadShader</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; fileName)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">	<span class="built_in">std</span>::ifstream file;</div><div class="line">	file.open((fileName).c_str());</div><div class="line"></div><div class="line">	<span class="built_in">std</span>::<span class="built_in">string</span> output;</div><div class="line">	<span class="built_in">std</span>::<span class="built_in">string</span> line;</div><div class="line"></div><div class="line">	<span class="keyword">if</span> (file.is_open())</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">while</span> (file.good())</div><div class="line">		&#123;</div><div class="line">			getline(file, line);</div><div class="line">			output.append(line + <span class="string">"\n"</span>);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span></div><div class="line">	&#123;</div><div class="line">		<span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"Unable to load shader: "</span> &lt;&lt; fileName &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">return</span> output;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CheckShaderError</span><span class="params">(GLuint shader, GLuint flag, <span class="keyword">bool</span> isProgram, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; errorMessage)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">	GLint success = <span class="number">0</span>;</div><div class="line">	GLchar error[<span class="number">1024</span>] = &#123; <span class="number">0</span> &#125;;</div><div class="line"></div><div class="line">	<span class="keyword">if</span> (isProgram)</div><div class="line">		glGetProgramiv(shader, flag, &amp;success);</div><div class="line">	<span class="keyword">else</span></div><div class="line">		glGetShaderiv(shader, flag, &amp;success);</div><div class="line"></div><div class="line">	<span class="keyword">if</span> (success == GL_FALSE)</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">if</span> (isProgram)</div><div class="line">			glGetProgramInfoLog(shader, <span class="keyword">sizeof</span>(error), <span class="literal">NULL</span>, error);</div><div class="line">		<span class="keyword">else</span></div><div class="line">			glGetShaderInfoLog(shader, <span class="keyword">sizeof</span>(error), <span class="literal">NULL</span>, error);</div><div class="line"></div><div class="line">		<span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; errorMessage &lt;&lt; <span class="string">": '"</span> &lt;&lt; error &lt;&lt; <span class="string">"'"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>3 . 在项目文件夹下新建<code>res</code>文件夹，如下图：<img src="http://img.blog.csdn.net/20160508204145889" alt="这里写图片描述"><br>4 . 在新建的<code>res</code>文件夹下，新建顶点着色器文件<code>basicShader.vs</code>，代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">#version 120</div><div class="line"></div><div class="line">attribute vec3 position;</div><div class="line"></div><div class="line">void main()</div><div class="line">&#123;</div><div class="line">	gl_Position = vec4(position, 1.0);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>5 . 在新建的<code>res</code>文件夹下，新建片元着色器文件<code>basicShader.fs</code>，代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">#version 120</div><div class="line"></div><div class="line">attribute vec3 position;</div><div class="line"></div><div class="line">void main()</div><div class="line">&#123;</div><div class="line">	gl_Position = vec4(position, 1.0);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>6 . 修改主类<code>main.cpp</code>，代码如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;GL\glew.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"display.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"mesh.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"shader.h"</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">	<span class="comment">// 设置窗体大小和标题</span></div><div class="line">	<span class="function">Display <span class="title">display</span><span class="params">(<span class="number">400</span>, <span class="number">300</span>, <span class="string">"hello world!"</span>)</span></span>;</div><div class="line"></div><div class="line">	<span class="comment">// 设置三角形顶点</span></div><div class="line">	Vertex vertices[] = &#123; Vertex(glm::vec3(<span class="number">-0.5</span>, <span class="number">-0.5</span>, <span class="number">0</span>)), Vertex(glm::vec3(<span class="number">0</span>, <span class="number">0.5</span>, <span class="number">0</span>)), Vertex(glm::vec3(<span class="number">0.5</span>, <span class="number">-0.5</span>, <span class="number">0</span>)), &#125;;</div><div class="line"></div><div class="line">	<span class="comment">// 生成网格</span></div><div class="line">	Mesh mesh(vertices, sizeof(vertices) / sizeof(vertices[0]));</div><div class="line">	<span class="comment">// 加载着色器</span></div><div class="line">	<span class="function">Shader <span class="title">shader</span><span class="params">(<span class="string">"./res/basicShader"</span>)</span></span>;</div><div class="line"></div><div class="line">	<span class="keyword">while</span> (!display.IsClosed())</div><div class="line">	&#123;</div><div class="line">		display.Clear(<span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>);</div><div class="line"></div><div class="line">		<span class="comment">// 绑定着色器</span></div><div class="line">		shader.Bind();</div><div class="line">		<span class="comment">// 绘制三角形</span></div><div class="line">		mesh.Draw();	</div><div class="line"></div><div class="line">		display.Update();<span class="comment">// 刷新</span></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>7 . 运行项目。运行后会显示一个绿色的OpenGL窗口中有一个红色三角形。如图：<br><img src="https://raw.githubusercontent.com/DavidSheh/MarkdownPictures/master/pictures/morden_opengl_8.png" alt="效果图"></p>
+<p><strong>注意：</strong>本文中的项目使用的是VS2015，建议是用VS2015打开。<a href="http://download.csdn.net/detail/wenxin2011/9513816" target="_blank" rel="noopener"><strong>点此下载源码</strong></a></p>
+<blockquote>
+<p>本文整理自YouTube视频教程<a href="https://www.youtube.com/watch?v=csKrVBWCItc&amp;index=7&amp;list=PLEETnX-uPtBXT9T-hD0Bj31DSnwio-ywh" target="_blank" rel="noopener">#3.5 Intro to Modern OpenGL Tutorial: Shaders</a></p>
+</blockquote>
+<hr>
+<p><strong>同系列文章</strong></p>
+<p><a href="http://davidsheh.github.io/2016/05/01/「Modern OpenGL系列（一）」十步搞定OpenGL开发环境/">「Modern OpenGL系列（一）」十步搞定OpenGL开发环境</a></p>
+<p><a href="http://davidsheh.github.io/2016/05/02/「Modern OpenGL系列（二）」创建OpenGL窗口/">「Modern OpenGL系列（二）」创建OpenGL窗口</a></p>
+<p><a href="http://davidsheh.github.io/2016/05/08/「Modern OpenGL系列（三）」用OpenGL绘制一个三角形/">「Modern OpenGL系列（三）」用OpenGL绘制一个三角形</a></p>
+<p><a href="http://davidsheh.github.io/2016/05/08/「Modern OpenGL系列（四）」在OpenGL中使用Shader/">「Modern OpenGL系列（四）」在OpenGL中使用Shader</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Sheh伟伟 WeChat Pay"/>
+        <p>微信打赏</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Sheh伟伟 Alipay"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Sheh伟伟
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://davidsheh.github.io/2016/05/08/「Modern OpenGL系列（四）」在OpenGL中使用Shader/" title="「Modern OpenGL系列（四）」在OpenGL中使用Shader">http://davidsheh.github.io/2016/05/08/「Modern OpenGL系列（四）」在OpenGL中使用Shader/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/08/「Modern OpenGL系列（三）」用OpenGL绘制一个三角形/" rel="next" title="「Modern OpenGL系列（三）」用OpenGL绘制一个三角形">
+                <i class="fa fa-chevron-left"></i> 「Modern OpenGL系列（三）」用OpenGL绘制一个三角形
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/22/Git快速入门/" rel="prev" title="Git快速入门">
+                Git快速入门 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "1",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      },
+      "slide": {
+        "bdImg": "5",
+        "bdPos": "left",
+        "bdTop": "100"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          <!-- ad start -->
+          
+
+          <!-- ad end -->
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="gitalk_container"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/4453301?v=4&s=460"
+               alt="Sheh伟伟" />
+          <p class="site-author-name" itemprop="name">Sheh伟伟</p>
+           
+              <p class="site-description motion-element" itemprop="description">做个有态度的程序员</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/DavidSheh" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1586558567/profile?topnav=1&wvr=6&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="764150976@qq.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheh伟伟</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+	
+
+
+	
+		
+		
+		
+		<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+		<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+    <script type="text/javascript">
+    var gitalk = new Gitalk({
+			clientID: 'a64275d932b30b7c6654',
+			clientSecret: '58cfd039fc57204bdaf145cb0973c7d72ba817a4',
+			repo: 'davidsheh.github.io',
+			owner: 'davidsheh',
+			admin: 'davidsheh',
+			id: window.location.pathname,
+    });
+    gitalk.render('gitalk_container');
+		</script>
+	
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
